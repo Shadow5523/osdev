@@ -17,7 +17,7 @@ void gdt_init(void){
 
 
 
-void set_segment_desc(struct gdt_desc *sd, uint32_t limit, uint32_t base, uint16_t s_access){
+void set_segment_desc(struct gdt_desc *sd, uint32_t limit, uint32_t base, uint8_t s_access){
   if(limit > 0xfffff){
     s_access |= 0x8000;
     limit /= 0x1000;

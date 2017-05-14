@@ -19,7 +19,7 @@ struct gdt_desc{
 };
 
 void gdt_init(void);
-void set_segment_desc(struct gdt_desc *, uint32_t, uint32_t, uint16_t);
+void set_segment_desc(struct gdt_desc *, uint32_t, uint32_t, uint8_t);
 
 
 #endif _GDT_H_
