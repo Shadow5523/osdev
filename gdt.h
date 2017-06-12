@@ -15,11 +15,9 @@ struct gdt_desc{
   uint16_t limit_low, base_low;
   uint8_t base_mid, s_access, limit_high, base_high;
 
-
 };
 
 void gdt_init(void);
 void set_segment_desc(struct gdt_desc *, uint32_t, uint32_t, uint8_t);
-
 
 #endif _GDT_H_
