@@ -2,16 +2,16 @@
 
 void gdt_init(void){
   struct gdt_desc *gdt = (struct gdt_desc *)0x00270000;
-  terminal_writestring("init the gdt...");
+  terminal_writestring("Initialize GDT...");
   for(uint32_t i = 0; i < 8192; i++){
     set_segment_desc(gdt + i, 0, 0, 0);
 
   }
   set_segment_desc(gdt + 1, 0xffffffff, 0x00000000, 0x4092);
-  set_segment_desc(gdt + 2, 0xffffffff, 0x00000000, 0x409A);
+  set_segment_desc(gdt + 2, 0x0007ffff, 0x00280000, 0x409A);
   
   load_gdtr(0xffff, 0x00270000);
-  terminal_writestring("  ok\n");
+  terminal_writestring("  OK!\n");
 
 }
 
