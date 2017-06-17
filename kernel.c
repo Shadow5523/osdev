@@ -16,6 +16,7 @@
 
 #include "terminal.h"
 #include "gdt.h"
+#include "idt.h"
 
            /* Hardware text mode color constants. */
 void keyboard_input(void);
@@ -47,6 +48,7 @@ us_keytableextern "C" /* Use C linkage for kernel_main. */
 void kernel_main(void){
   terminal_initialize();
   gdt_init();
+  idt_init();
 
   terminal_writestring("The homemade OS!\n\n");
 
