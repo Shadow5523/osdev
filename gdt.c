@@ -1,33 +1,41 @@
 #include "gdt.h"
 
-void gdt_init(void){
-  struct gdt_desc *gdt = (struct gdt_desc *)0x00270000;
-  terminal_writestring("Initialize GDT...");
-  for(uint32_t i = 0; i < 8192; i++){
-    set_segment_desc(gdt + i, 0, 0, 0);
+gdt_desc gdt_entries[GDT_LEN];
 
-  }
-  set_segment_desc(gdt + 1, 0xffffffff, 0x00000000, 0x4092);
-  set_segment_desc(gdt + 2, 0x0007ffff, 0x00280000, 0x409A);
-  
-  load_gdtr(0xffff, 0x00270000);
-  terminal_writestring("  OK!\n");
+void gdt_init(){
+    gdtr   gdt;
 
+    terminal_writestring("Initialize GDT...");
+
+    for(uint32_t i = 0; i < GDT_LEN; i++){
+      set_segment_desc(i, 0, 0, 0, 0);
+
+    }
+    set_segment_desc(0, 0, 0, 0, 0);
+    set_segment_desc(1, 0, 0xffffffff, 0x9a, 0xcf);
+    set_segment_desc(2, 0, 0xffffffff, 0x92, 0xcf);
+    set_segment_desc(3, 0, 0xffffffff, 0xfa, 0xcf);
+    set_segment_desc(4, 0, 0xffffffff, 0xf2, 0xcf);
+
+    gdt.gdt_size =  GDT_LEN * sizeof(gdt_desc) - 1;
+    gdt.base = (uint32_t)gdt_entries;
+    
+    load_gdtr((uint32_t)(&gdt));
+
+    terminal_writestring("  OK!\n");
 }
 
 
 
-void set_segment_desc(struct gdt_desc *sd, uint32_t limit, uint32_t base, uint8_t s_access){
-  if(limit > 0xfffff){
-    s_access |= 0x8000;
-    limit /= 0x1000;
-    
-  }
-  sd -> base_high = (base >> 24) & 0xff;
+
+void set_segment_desc(uint32_t index, uint32_t base, uint32_t limit, uint8_t s_access, uint8_t gran){
+  gdt_desc * sd = &gdt_entries[index];
+
+  sd -> base_high = (base >> 24 & 0xff);
   sd -> base_low = base & 0xffff;
   sd -> base_mid = (base >> 16) & 0xff;
-  sd -> s_access = s_access & 0xff;
+  sd -> s_access = s_access;
   sd -> limit_low = limit & 0xffff;
-  sd -> limit_high = ((limit >> 16) & 0x0f) | ((s_access >> 8) & 0xf0);
-  
+  sd -> limit_high = ((limit >> 16) & 0x0f) | (gran & 0xf0);
+
 }
