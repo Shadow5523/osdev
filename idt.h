@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 #include "terminal.h"
+#include "pic.h"
+#include "interrupt.h"
 
 #ifdef __cplusplus
 extern "C" void load_idtr(uint32_t);

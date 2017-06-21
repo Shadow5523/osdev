@@ -4,6 +4,9 @@ boot.o: boot.s
 terminal.o: terminal.h terminal.c vga.h
 	i686-elf-gcc -c terminal.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
+inb_outb.o : inb_outb.h
+	i686-elf-gcc -c inb_outb.h -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
 gdts.o: gdt.s
 	i686-elf-as gdt.s -o gdts.o
 
@@ -16,10 +19,22 @@ idts.o:	idt.s
 idt.o: idt.h idt.c
 	i686-elf-gcc -c idt.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
+pic.o: pic.h pic.c
+	i686-elf-gcc -c pic.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+pit.o: pit.c
+	i686-elf-gcc -c pit.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+interrupt.o: interrupt.c interrupt.h
+	i686-elf-gcc -c interrupt.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+keyboard.o: keyboard.c keyboard.h
+	i686-elf-gcc -c keyboard.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
 kernel.o: kernel.c
 	i686-elf-gcc -c kernel.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-create: kernel.o terminal.o boot.o gdt.o gdts.o idts.o idt.o
+create: kernel.o terminal.o boot.o gdt.o gdts.o idts.o idt.o inb_outb.o pic.o pit.o interrupt.o keyboard.o
 	i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib *.o -lgcc
 	grub2-file --is-x86-multiboot myos.bin
 	\cp -f myos.bin isodir/boot/myos.bin

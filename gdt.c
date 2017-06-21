@@ -11,7 +11,6 @@ void gdt_init(){
       set_segment_desc(i, 0, 0, 0, 0);
 
     }
-    set_segment_desc(0, 0, 0, 0, 0);
     set_segment_desc(1, 0, 0xffffffff, 0x9a, 0xcf);
     set_segment_desc(2, 0, 0xffffffff, 0x92, 0xcf);
     set_segment_desc(3, 0, 0xffffffff, 0xfa, 0xcf);

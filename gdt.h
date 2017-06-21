@@ -31,4 +31,4 @@ typedef struct{
 void gdt_init();
 void set_segment_desc(uint32_t, uint32_t, uint32_t, uint8_t, uint8_t);
 
-#endif _GDT_H
+#endif _GDT_H_
