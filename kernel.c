@@ -16,6 +16,8 @@
 
 #include "terminal.h"
 #include "gdt.h"
+#include "pic.h"
+#include "pit.h"
 #include "idt.h"
 #include "keyboard.h"
 #include "inb_outb.h"
@@ -29,13 +31,19 @@ us_keytableextern "C" /* Use C linkage for kernel_main. */
 void kernel_main(void){
   terminal_initialize();
   gdt_init();
+  pic_init();
+  pit_init();
   idt_init();
 
+
   terminal_writestring("The homemade OS!\n\n");
+  /*
+  //asm volatile("hlt");
 
   if(ps2_kerbord_init() == 0){
     //keyboard_input();
     while(1){
+      asm volatile("hlt");
 
     }
 
@@ -43,11 +51,17 @@ void kernel_main(void){
     at_kerbord_init();
     //keyboard_input();
     while(1){
+      asm volatile("hlt");
 
     }
 
   }
-  
+  */
+
+  for(;;){
+    //asm volatile("hlt");
+
+  }
 }
 
 
