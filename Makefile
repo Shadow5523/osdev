@@ -22,11 +22,14 @@ idt.o: idt.h idt.c
 pic.o: pic.h pic.c
 	i686-elf-gcc -c pic.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-pit.o: pit.c
+pit.o: pit.c pit.h
 	i686-elf-gcc -c pit.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
 interrupt.o: interrupt.c interrupt.h
 	i686-elf-gcc -c interrupt.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+interruptas.o: interrupt.s
+	i686-elf-as interrupt.s -o interruptas.o
 
 keyboard.o: keyboard.c keyboard.h
 	i686-elf-gcc -c keyboard.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
@@ -34,7 +37,7 @@ keyboard.o: keyboard.c keyboard.h
 kernel.o: kernel.c
 	i686-elf-gcc -c kernel.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-create: kernel.o terminal.o boot.o gdt.o gdts.o idts.o idt.o inb_outb.o pic.o pit.o interrupt.o keyboard.o
+create: kernel.o terminal.o boot.o gdt.o gdts.o idts.o idt.o inb_outb.o pic.o pit.o interrupt.o keyboard.o interruptas.o
 	i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib *.o -lgcc
 	grub2-file --is-x86-multiboot myos.bin
 	\cp -f myos.bin isodir/boot/myos.bin

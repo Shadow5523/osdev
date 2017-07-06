@@ -1,5 +1,4 @@
-#include "inb_outb.h"
-#include "pic.h"
+#include "pit.h"
 
 /* Port Address*/
 #define PIT_REG_COUNTER0 0x0040
@@ -57,6 +56,6 @@ uint32_t setPitCounter(uint32_t freq, uint8_t counter, uint8_t mode){
 
 
 
-uint32_t initPit(void){
+uint32_t pit_init(void){
   setPitCounter(100, DEF_PIT_COM_COUNTER0, DEF_PIT_COM_MODE_SQUAREWAVE);
 }

@@ -10,16 +10,14 @@ void idt_init(void){
     set_gate_desc(i, 0, 0, 0);
 
   }
-
-  pic_init();
-
-  set_gate_desc(32, (uint32_t)timer_interrupt, 0x08, 0x8e);
-  set_gate_desc(33, (uint32_t)keyboard_interrupt, 0x08, 0x8e);
+  set_gate_desc(32, (uint32_t)as_timer_interrupt, 0x08, 0x8e);
+  set_gate_desc(33, (uint32_t)as_keyboard_interrupt, 0x08, 0x8e);
 
   idt.idt_size = IDT_LEN * sizeof(gate_desc) - 1;
   idt.base = (uint32_t)idt_entries;
 
   load_idtr((uint32_t)&(idt));
+
   asm volatile("sti");
 
   terminal_writestring("  OK!\n");
@@ -35,7 +33,6 @@ void set_gate_desc(uint32_t index, uint32_t offset, uint32_t selector, uint8_t a
   gd -> offset_high = (offset >> 16) & 0xffff;
   gd -> dw_count = 0;
   gd -> selector = selector;
-  //gd -> dw_count = (ar >> 8) & 0xff;
-  gd -> s_access = ar & 0x60;
+  gd -> s_access = ar | 0x60;
 
 }

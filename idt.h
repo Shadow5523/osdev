@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include "terminal.h"
-#include "pic.h"
 #include "interrupt.h"
 
 #ifdef __cplusplus
@@ -11,6 +10,9 @@ extern "C" void load_idtr(uint32_t);
 #else
 extern void load_idtr(uint32_t);
 #endif
+
+extern as_keyboard_interrupt(void);
+extern as_timer_interrupt(void);
 
 typedef struct{
   uint16_t offset_low;

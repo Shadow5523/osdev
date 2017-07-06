@@ -1,6 +1,9 @@
 #include "pic.h"
 
 void pic_init(void){
+  outb(MASTER_PIC_MASK_DATA, CLEAR_MASK);
+  outb(SLAVE_PIC_MASK_DATA, CLEAR_MASK);
+
   outb(MASTER_PIC_CMD_STAT, WRITE_ICW1);
   outb(SLAVE_PIC_CMD_STAT, WRITE_ICW1);
 
@@ -12,13 +15,8 @@ void pic_init(void){
 
   outb(MASTER_PIC_MASK_DATA, WRITE_ICW4_X86MODE);
   outb(SLAVE_PIC_MASK_DATA, WRITE_ICW4_X86MODE);
-
-  //init_irq0
-  outb(MASTER_PIC_MASK_DATA, (~PIC_MASK_IRQ0) & (PIC_MASK_IRQ0));
-
-  //init_irq1
-  outb(MASTER_PIC_MASK_DATA, (~PIC_MASK_IRQ0) & (~PIC_MASK_IRQ1) & (~PIC_MASK_IRQ2));
-
-  outb(SLAVE_PIC_MASK_DATA, PIC_MASK_IRQA);
-
+  
+  outb(MASTER_PIC_MASK_DATA, 0xf9);
+  outb(SLAVE_PIC_MASK_DATA, 0xef);
+  
 }

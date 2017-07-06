@@ -2,13 +2,15 @@
 #define _INETRRUPT_H_ 
 
 #include "pic.h"
+#include "keyboard.h"
 
-void enter_interrupt(void);
 void interrupt_done(void);
-void exit_interrupt(void);
 
 //irq
 void timer_interrupt(void);
 void keyboard_interrupt(void);
 
 #endif _INETRRUPT_H_
+
+#define irq0 0x60
+#define irq1 0x61
