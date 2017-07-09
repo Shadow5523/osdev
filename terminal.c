@@ -1,11 +1,6 @@
 #include "terminal.h"
 #include "vga.h"
 
-//size_t t_row;
-//size_t t_column;
-//uint8_t t_color;
-//uint16_t* t_buffer;
-
 void terminal_initialize(void){
   t_row = 0;
   t_column = 0;
