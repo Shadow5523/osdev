@@ -1,6 +1,8 @@
 #include "pic.h"
 
 void pic_init(void){
+  terminal_writestring("Initialize PIC...");
+  
   outb(MASTER_PIC_MASK_DATA, CLEAR_MASK);
   outb(SLAVE_PIC_MASK_DATA, CLEAR_MASK);
 
@@ -18,5 +20,7 @@ void pic_init(void){
   
   outb(MASTER_PIC_MASK_DATA, 0xf9);
   outb(SLAVE_PIC_MASK_DATA, 0xef);
+
+  terminal_writestring("  OK!\n");
   
 }

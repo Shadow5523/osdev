@@ -20,7 +20,6 @@ typedef struct{
   uint8_t dw_count;
   uint8_t s_access;
   uint16_t offset_high;  
-
 }__attribute__((packed)) gate_desc;
 
 typedef struct{
@@ -28,8 +27,9 @@ typedef struct{
   uint32_t base;
 }__attribute__((packed)) idtr;
 
-#define LIDT    0x000007ff
-#define IDT_LEN        256
+#define LIDT      0x000007ff
+#define IDT_LEN   256
+gate_desc idt_entries[IDT_LEN];
 
 void idt_init(void);
 void set_gate_desc(uint32_t, uint32_t, uint32_t, uint8_t);
