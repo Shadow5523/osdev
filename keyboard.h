@@ -8,8 +8,8 @@
 #define SCAN_CODE_SET2 0x02
 #define SCAN_CODE_SET3 0x03
 
-static size_t i = 0;
-static size_t j = 0;
+static uint64_t i = 0;
+static uint64_t j = 0;
 
 typedef struct{
   uint8_t pdata[2];

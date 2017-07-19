@@ -30,6 +30,7 @@ uint8_t ps2_kerboard_init(void){
   }
   outb(0x60, 0xFA);
   return 0;
+  
 }
 
 
