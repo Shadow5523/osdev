@@ -1,17 +1,24 @@
 #include "kernel.h"
 
 void kernel_main(void){
-  terminal_initialize();
+  terminal_initialize();    
   key_init();
   gdt_init();
   pic_init();
   pit_init();
   idt_init();
   terminal_writestring("The homemade OS!\n\n");
-  for(;;){
-
-  } 
-}
+  for (;;) {    
+    asm volatile("cli");
+    if (kb.flag == 0) {
+      asm volatile("sti");
+    } else {
+      asm volatile("sti");
+      terminal_writestring(kb.pdata);
+      kb.flag = 0;
+    }
+  }
+} 
 
 
 

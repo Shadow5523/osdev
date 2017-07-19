@@ -2,7 +2,7 @@
 #define _GDT_H_
 
 #include <stdint.h>
-#include "terminal.h"
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" void load_gdtr(uint32_t);

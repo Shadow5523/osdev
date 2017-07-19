@@ -13,12 +13,6 @@ gdts.o: gdt.s
 gdt.o: gdt.h gdt.c
 	i686-elf-gcc -c gdt.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-idts.o:	idt.s
-	i686-elf-as idt.s -o idts.o
-
-idt.o: idt.h idt.c
-	i686-elf-gcc -c idt.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
-
 pic.o: pic.h pic.c
 	i686-elf-gcc -c pic.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
@@ -33,6 +27,12 @@ interruptas.o: interrupt.s
 
 keyboard.o: keyboard.c keyboard.h
 	i686-elf-gcc -c keyboard.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+idts.o: idt.s
+	i686-elf-as idt.s -o idts.o
+
+idt.o: idt.h idt.c
+	i686-elf-gcc -c idt.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
 kernel.o: kernel.c
 	i686-elf-gcc -c kernel.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra

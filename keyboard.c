@@ -7,15 +7,15 @@ uint8_t getscodeset(void);
 void changecodeset(uint8_t);
 
 void key_init(void){
-  if (ps2_kerbord_init() == 0) {
-
-  } else if ( at_kerbord_init() == 0) {
-
+  if (ps2_kerboard_init() == 0) {
+    terminal_writestring("PS/2 Keyboard init OK\n");
+  } else if (at_kerboard_init() == 0) {
+    terminal_writestring("AT Keyboard init OK\n");
   }
 }
 
 
-uint8_t ps2_kerbord_init(void){
+uint8_t ps2_kerboard_init(void){
   changecodeset(SCAN_CODE_SET2);
   uint8_t scodeset = getscodeset();
   if (scodeset == 0x43) {
@@ -33,9 +33,10 @@ uint8_t ps2_kerbord_init(void){
 }
 
 
-uint8_t at_kerbord_init(void){
+uint8_t at_kerboard_init(void){
   outb(0x60, 0xF2);
   if (getscode() == 0xAB) {
+    changecodeset(SCAN_CODE_SET2);
     terminal_writestring("at keybord test ok\n\n");
     return 0;
   }
@@ -55,14 +56,13 @@ void keyboard_input_int(int8_t scan_code){
     '0', '0', '0', '0', 'a', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0'};
-  char psend[2] = {us_keytable_set2[scan_code], 0};
-
+  kb.pdata[0] = us_keytable_set2[scan_code];
   if (i == 1) {
     if (j == 0) {
-      terminal_writestring(psend);
+      kb.flag = 1;
       old = scan_code;
     } else if (j > 800000) {
-      terminal_writestring(psend);
+      kb.flag = 1;
     }
   }
 

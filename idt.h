@@ -1,8 +1,6 @@
 #ifndef _IDT_H_
 #define _IDT_H_
 
-#include <stdint.h>
-#include "terminal.h"
 #include "interrupt.h"
 
 #ifdef __cplusplus

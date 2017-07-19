@@ -22,6 +22,9 @@
 #include "keyboard.h"
 #include "inb_outb.h"
 
+key_buf kb;
+extern key_buf kb;
+
 size_t strlen(const char*);
 
 #if defined(__cplusplus)
