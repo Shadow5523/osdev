@@ -11,7 +11,7 @@ C言語, GNU Assembler
   
   
 2. [OSを自作してみる2 ～32ビットOSの作成～](http://shadows.dip.jp/?p=126)  
-　 ソースコード : [version_1](/version_1)
+   ソースコード : [version_1](/version_1)
   
 3. [OSを自作してみる3 ～キーボード入力～](http://shadows.dip.jp/?p=235)  
    ソースコード : [version_2](/version_2)
