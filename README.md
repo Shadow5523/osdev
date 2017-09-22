@@ -22,7 +22,7 @@ C言語, GNU Assembler
 5. [OSを自作してみる5 ～IDT/PICの初期化～](http://shadows.dip.jp/?p=415)  
    ソースコード : [version_4](/version_4)  
 
-6. [OSを自作してみる6 ～割り込み経由でのキー入力～](http://shadows.dip.jp/?p=508)
+6. [OSを自作してみる6 ～割り込み経由でのキー入力～](http://shadows.dip.jp/?p=508)  
    ソースコード : [version_5](/version_5)  
   
   
