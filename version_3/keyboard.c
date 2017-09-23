@@ -43,27 +43,29 @@ void keyboard_input_int(void){
 
   while(1){
     scan_code = getchar();
-    psend[0] = us_keytable_set2[scan_code];
-    psend[1] = 0;
-    if (i == 1) {
-      if (j == 0) {
-        terminal_writestring(psend);
-        old = scan_code;
-      } else if (j > 800000) {
+    if (scan_code <= 0x80) {
+      psend[0] = us_keytable_set2[scan_code];
+      psend[1] = 0;
+      if (i == 1) {
+	if (j == 0) {
+	  terminal_writestring(psend);
+	  old = scan_code;
+	} else if (j > 800000) {
 
-        terminal_writestring(psend);
+	  terminal_writestring(psend);
+	}
       }
-    }
 
-    if (old != scan_code) {
-      i = 0;
-      j = 0;
-    } else if (old == scan_code) {
-      ++j;
-    }
+      if (old != scan_code) {
+	i = 0;
+	j = 0;
+      } else if (old == scan_code) {
+	++j;
+      }
 
-    if(i > 700000) i = 0;
-    ++i;
+      if(i > 700000) i = 0;
+      ++i;
+    }
   }
 }
 
