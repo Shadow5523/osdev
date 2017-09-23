@@ -26,13 +26,12 @@ void terminal_putentryat(uint8_t c, uint8_t color, size_t x, size_t y){
 }
 
 
-//以下の関数を追加
 void terminal_uponerow(void){
-  for(size_t y = 1; y < VGA_HEIGHT; y++){
-    for(size_t x = 0; x < VGA_WIDTH; x++){
+  for (size_t y = 1; y < VGA_HEIGHT; y++) {
+    for (size_t x = 0; x < VGA_WIDTH; x++) {
       const size_t index = y * VGA_WIDTH + x;
       t_buffer[(y - 1) * VGA_WIDTH + x] = t_buffer[index];
-      if(y == (VGA_HEIGHT - 1)){
+      if (y == (VGA_HEIGHT - 1)) {
         t_buffer[index] = vga_entry(' ', t_color);
       }
     }
@@ -40,26 +39,25 @@ void terminal_uponerow(void){
 }
 
 
-//既存の下記関数を以下のように変更
 void terminal_putchar(uint8_t c){
-  if(c == '\n'){
+  if (c == '\n') {
     c = 0;
-    if(++t_row >= VGA_HEIGHT){
+    if (++t_row >= VGA_HEIGHT) {
       terminal_uponerow();
       --t_row;
       t_column = -1;
-    }else{
+    } else {
       t_column = -1;
     }
-  }else if(c == '\t'){
+  } else if (c == '\t') {
     c = 0;
     t_column += 4;
-  }else if(c == '\b'){
+  } else if(c == '\b') {
     c = 0;
     t_buffer[(t_row * VGA_WIDTH + t_column) - 1] = vga_entry(' ', t_color);
-    if(--t_column <= 0){
+    if (--t_column <= 0) {
       t_column = VGA_WIDTH;
-      if(--t_row < 2){
+      if (--t_row < 2) {
         t_row = 2;
         t_column = 0;
       }
@@ -67,9 +65,9 @@ void terminal_putchar(uint8_t c){
     return;
   }
   terminal_putentryat(c, t_color, t_column, t_row);
-  if(++t_column >= VGA_WIDTH){
+  if (++t_column >= VGA_WIDTH) {
     t_column = 0;
-    if(++t_row >= VGA_HEIGHT){
+    if (++t_row >= VGA_HEIGHT) {
       terminal_uponerow();
       --t_row;
     }

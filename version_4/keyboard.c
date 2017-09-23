@@ -78,8 +78,8 @@ uint8_t getscodeset(void){
 }
 
 
-char getscode(void){
-  char c = 0;
+uint8_t getscode(void){
+  uint8_t c = 0;
   do {
     if (inb(0x60) != c) {
       c = inb(0x60);
@@ -89,7 +89,7 @@ char getscode(void){
 }
 
 
-char getchar(void){
+uint8_t getchar(void){
   return getscode();
 }
 
