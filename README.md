@@ -29,4 +29,7 @@ C言語, GNU Assembler
 ## 参考資料
 [OSDev.org](http://wiki.osdev.org/Main_Page)  
 [０から作るソフトウェア開発](http://softwaretechnique.jp/OS_Development/scratchbuild.html)  
-[30日でできる！　OS自作入門](https://books.google.co.jp/books/about/30%E6%97%A5%E3%81%A7%E3%81%A7%E3%81%8D%E3%82%8B_OS%E8%87%AA%E4%BD%9C%E5%85%A5%E9%96%80.html?id=ilSvAgAAQBAJ&source=kp_cover&redir_esc=y)  
+[30日でできる！　OS自作入門](https://books.google.co.jp/books/about/30%E6%97%A5%E3%81%A7%E3%81%A7%E3%81%8D%E3%82%8B_OS%E8%87%AA%E4%BD%9C%E5%85%A5%E9%96%80.html?id=ilSvAgAAQBAJ&source=kp_cover&redir_esc=y)
+
+
+<center><img src="http://shadows.dip.jp/wp-content/uploads/2017/09/githubへ投稿.png" alt="" width="30%"/></center>
