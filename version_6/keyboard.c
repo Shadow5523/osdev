@@ -48,6 +48,7 @@ void keyboard_input_int(uint8_t scan_code){
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0'};
 
+  //追加
   uint8_t us_keytable_set2S[0x80] = {
     '0', '0', '!', '@', '#', '$', '%', '^', '&', '*',
     '(', ')', '_', '+', '\b', '\t', 'Q', 'W', 'E', 'R',
@@ -62,10 +63,10 @@ void keyboard_input_int(uint8_t scan_code){
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0'};
-
+  
   if (scan_code <= 0x80) {
     if (kb.len < 128) {
-      if (scan_code == L_SHIFT) {
+      if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
 	ks.shift_enable = true;
       } else {
 	if (ks.shift_enable) {
@@ -84,7 +85,7 @@ void keyboard_input_int(uint8_t scan_code){
     }
   }
 }
-
+  
 
 uint8_t getscodeset(void){
   outb(PORTMAP_KEYBOARD1, 0xf0);

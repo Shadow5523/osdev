@@ -16,6 +16,7 @@
 #define PORTMAP_KEYBOARD1 0x60
 #define PORTMAP_KEYBOARD2 0x61
 
+//追加
 #define L_SHIFT 0x2a
 #define R_SHIFT 0x36
 
