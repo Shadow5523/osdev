@@ -8,14 +8,17 @@ void key_init(void){
   if (ps2_kerboard_init() == 0) {
     terminal_writestring("PS/2 Keyboard init OK\n");
   }
+  
+  //追加
   ks.shift_enable = false;
-  ks.relese_enable = false;
+  ks.caps_lock = false;
 }
 
 
 uint8_t ps2_kerboard_init(void){
   change_codeset(SCAN_CODE_SET2);
   uint8_t scodeset = getscodeset();
+  
   if (scodeset == 0x43) {
     terminal_writestring("Scan code set 1\n");
   } else if (scodeset == 0x41) {
@@ -63,16 +66,28 @@ void keyboard_input_int(uint8_t scan_code){
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0'};
-  
+
   if (scan_code <= 0x80) {
     if (kb.len < 128) {
       if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
 	ks.shift_enable = true;
+	
+      } else if (scan_code == CAPS_LOCK && !ks.caps_lock) {
+	ks.caps_lock = true;
+	
+      } else if (scan_code == CAPS_LOCK && ks.caps_lock) {
+	ks.caps_lock = false;
+	
       } else {
-	if (ks.shift_enable) {
+	if (ks.shift_enable && !ks.caps_lock) {
 	  kb.pdata[kb.write++] = us_keytable_set2S[scan_code];
+	  
+	} else if (!ks.shift_enable && ks.caps_lock) {
+	  kb.pdata[kb.write++] = us_keytable_set2S[scan_code];
+	  
 	} else {
 	  kb.pdata[kb.write++] = us_keytable_set2[scan_code];
+	  
 	}
 	++kb.len;
 	if (kb.write == 128) { kb.write = 0; }
@@ -85,7 +100,8 @@ void keyboard_input_int(uint8_t scan_code){
     }
   }
 }
-  
+
+
 
 uint8_t getscodeset(void){
   outb(PORTMAP_KEYBOARD1, 0xf0);
@@ -111,7 +127,7 @@ uint8_t getchar(void){
 
 
 void change_codeset(uint8_t set){
-  outb(PORTMAP_KEYBOARD1, 0xf0);
+  outb(PORTMAP_KEYBOARD1, 0xF0);
   outb(PORTMAP_KEYBOARD1, set);
 }
 
