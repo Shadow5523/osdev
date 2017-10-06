@@ -5,7 +5,10 @@ key_buf kb;
 
 void key_init(void){
   change_trate_delay(TYPEMATICDELEY_SET11);
-  if (ps2_kerboard_init() == 0) {
+  if (enable_keyboard() == 0xFA) {
+    terminal_writestring("Keyboard enable OK\n");
+  }
+  if (!ps2_kerboard_init()) {
     terminal_writestring("PS/2 Keyboard init OK\n");
   }
   
@@ -16,9 +19,8 @@ void key_init(void){
 
 
 uint8_t ps2_kerboard_init(void){
-  change_codeset(SCAN_CODE_SET2);
-  uint8_t scodeset = getscodeset();
-  
+  //change_codeset(SCAN_CODE_SET2);
+  uint8_t scodeset = getscodeset();  
   if (scodeset == 0x43) {
     terminal_writestring("Scan code set 1\n");
   } else if (scodeset == 0x41) {
@@ -29,7 +31,6 @@ uint8_t ps2_kerboard_init(void){
     terminal_writestring("Unknown scan code set\n");
     return 1;
   }
-  outb(0x60, 0xFA);
   return 0;
 
 }
@@ -102,11 +103,20 @@ void keyboard_input_int(uint8_t scan_code){
 }
 
 
+uint8_t enable_keyboard(){
+  outb(PORTMAP_KEYBOARD1, 0xF4);
+  return getscode();
+}
+
 
 uint8_t getscodeset(void){
-  outb(PORTMAP_KEYBOARD1, 0xf0);
-  outb(PORTMAP_KEYBOARD1, 0x00);
-  return getscode();
+  outb(PORTMAP_KEYBOARD1, 0xF0);
+  if (getscode() == 0xFA ) {
+    outb(PORTMAP_KEYBOARD1, 0x00);
+    return getscode();
+  } else {
+    return 0x00;
+  }
 }
 
 

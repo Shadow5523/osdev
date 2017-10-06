@@ -39,6 +39,7 @@ key_stat ks;     //追加
 void key_init(void);
 uint8_t ps2_kerboard_init(void);
 void keyboard_input_int(uint8_t);
+uint8_t enable_keyboard(void);
 uint8_t getscode(void);
 uint8_t getchar(void);
 uint8_t getscodeset(void);
