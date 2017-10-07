@@ -4,11 +4,11 @@ extern key_buf kb;
 
 void kernel_main(void){
   terminal_initialize();
-  key_init();
   gdt_init();
   pic_init();
   idt_init();
-  terminal_writestring("Hello, kernel World! \n");
+  key_init();
+  terminal_writestring("Hello, kernel World! \n\n");
 
   kb.len = 0;
   kb.write = 0;

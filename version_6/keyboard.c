@@ -19,16 +19,17 @@ void key_init(void){
 
 
 uint8_t ps2_kerboard_init(void){
-  //change_codeset(SCAN_CODE_SET2);
   uint8_t scodeset = getscodeset();  
   if (scodeset == 0x43) {
-    terminal_writestring("Scan code set 1\n");
+    terminal_writestring("Current Scan code set 1\nCorrection to Scan code set2\n");
+    change_codeset(SCAN_CODE_SET2);
   } else if (scodeset == 0x41) {
     terminal_writestring("Scan code set 2\n");
   } else if (scodeset == 0x3f) {
-    terminal_writestring("Scan code set 3\n");
+    terminal_writestring("Current Scan code set 3\nCorrection to Scan code set2\n");
+    change_codeset(SCAN_CODE_SET2);
   } else {
-    terminal_writestring("Unknown scan code set\n");
+    terminal_writestring("Unknown scan code set\nPS/2 Emulation?\n");
     return 1;
   }
   return 0;
@@ -68,6 +69,7 @@ void keyboard_input_int(uint8_t scan_code){
     '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0'};
 
+  //ここから下は全般的に変更する
   if (scan_code <= 0x80) {
     if (kb.len < 128) {
       if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
@@ -75,9 +77,11 @@ void keyboard_input_int(uint8_t scan_code){
 	
       } else if (scan_code == CAPS_LOCK && !ks.caps_lock) {
 	ks.caps_lock = true;
+	switch_capslock_led(SET_CAPSLOCK_LED);
 	
       } else if (scan_code == CAPS_LOCK && ks.caps_lock) {
 	ks.caps_lock = false;
+	switch_capslock_led(SET_CAPSLOCK_LED & 0x03);
 	
       } else {
 	if (ks.shift_enable && !ks.caps_lock) {
@@ -103,15 +107,25 @@ void keyboard_input_int(uint8_t scan_code){
 }
 
 
-uint8_t enable_keyboard(){
-  outb(PORTMAP_KEYBOARD1, 0xF4);
+void switch_capslock_led(uint8_t set_led){
+  while (inb(PORTMAP_KEYBOARD2) & 0x02);
+  outb(PORTMAP_KEYBOARD1, SWITCH_LED);
+  while (inb(PORTMAP_KEYBOARD2) & 0x02);
+  outb(PORTMAP_KEYBOARD1, set_led);
+}
+
+
+uint8_t enable_keyboard(void){
+  outb(PORTMAP_KEYBOARD1, ENABLE_KEYBOARD);
   return getscode();
 }
 
 
 uint8_t getscodeset(void){
-  outb(PORTMAP_KEYBOARD1, 0xF0);
-  if (getscode() == 0xFA ) {
+  while (inb(PORTMAP_KEYBOARD2) & 0x02);
+  outb(PORTMAP_KEYBOARD1, SET_SCANCODESET);
+  if (getscode() == 0xFA) {
+    while (inb(PORTMAP_KEYBOARD2) & 0x02);
     outb(PORTMAP_KEYBOARD1, 0x00);
     return getscode();
   } else {
@@ -137,13 +151,14 @@ uint8_t getchar(void){
 
 
 void change_codeset(uint8_t set){
-  outb(PORTMAP_KEYBOARD1, 0xF0);
+  outb(PORTMAP_KEYBOARD1, SET_SCANCODESET);
   outb(PORTMAP_KEYBOARD1, set);
 }
 
 
 void change_trate_delay(uint8_t set){
-  outb(PORTMAP_KEYBOARD1, 0xf3);
+  while (inb(PORTMAP_KEYBOARD2) & 0x02);
+  outb(PORTMAP_KEYBOARD1, SET_TYPEMATIC_RATE);
+  while (inb(PORTMAP_KEYBOARD2) & 0x02);
   outb(PORTMAP_KEYBOARD1, set);
-
 }

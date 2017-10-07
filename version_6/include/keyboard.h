@@ -5,21 +5,33 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+//追加
+//command
+#define SWITCH_LED           0xED
+#define ENABLE_KEYBOARD      0xF4
+#define SET_SCANCODESET      0xF0
+#define SET_TYPEMATIC_RATE   0xF3
+
+//options
 #define SCAN_CODE_SET1       0x01
 #define SCAN_CODE_SET2       0x02
 #define SCAN_CODE_SET3       0x03
+#define GET_SCAN_CODE_SET    0x00
 
 #define TYPEMATICDELAY_SET01 0x01
 #define TYPEMATICDELAY_SET02 0x02
 #define TYPEMATICDELEY_SET11 0x0B
 
 #define PORTMAP_KEYBOARD1    0x60
-#define PORTMAP_KEYBOARD2    0x61
+#define PORTMAP_KEYBOARD2    0x64
+
+#define SET_CAPSLOCK_LED     0x04
 
 //追加
 #define L_SHIFT              0x2A
 #define R_SHIFT              0x36
 #define CAPS_LOCK            0x3A
+#define CAPS_LOCK_LED        0x02
 
 typedef struct{
   uint8_t pdata[128];
@@ -39,6 +51,7 @@ key_stat ks;     //追加
 void key_init(void);
 uint8_t ps2_kerboard_init(void);
 void keyboard_input_int(uint8_t);
+void switch_capslock_led(uint8_t);
 uint8_t enable_keyboard(void);
 uint8_t getscode(void);
 uint8_t getchar(void);
