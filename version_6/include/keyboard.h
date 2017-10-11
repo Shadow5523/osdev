@@ -5,9 +5,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-//追加
 //command
-#define SWITCH_LED           0xED
+#define SWITCH_LED           0xED     //追加
 #define ENABLE_KEYBOARD      0xF4
 #define SET_SCANCODESET      0xF0
 #define SET_TYPEMATIC_RATE   0xF3

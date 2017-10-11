@@ -2,8 +2,8 @@
 
 void kernel_main(void){
   terminal_initialize();
-  key_init();
   gdt_init();     //追加
+  key_init();
   terminal_writestring("Hello, \nkernel \nWorld! \n");
   keyboard_input_int();
 }

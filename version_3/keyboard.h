@@ -22,9 +22,10 @@ extern key_buf kb;
 void key_init(void);
 uint8_t ps2_kerboard_init(void);
 void keyboard_input_int(void);
+uint8_t enable_keyboard(void);
 uint8_t getscode(void);
 uint8_t getchar(void);
 uint8_t getscodeset(void);
-void changecodeset(uint8_t);
+void change_codeset(uint8_t);
 
 #endif _KEYBOARD_H_

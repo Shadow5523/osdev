@@ -12,6 +12,7 @@ void terminal_initialize(void){
       t_buffer[index] = vga_entry(' ', t_color);
     }
   }
+  terminal_writestring("Initialize Terminal... OK\n");
 }
 
 

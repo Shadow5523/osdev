@@ -2,6 +2,9 @@
 #include "inb_outb.h"
 
 void key_init(void){
+  if (enable_keyboard() == 0xFA) {
+    terminal_writestring("Keyboard enable OK\n");
+  }
   if (ps2_kerboard_init() == 0) {
     terminal_writestring("PS/2 Keyboard init OK\n");
   }
@@ -9,19 +12,19 @@ void key_init(void){
 
 
 uint8_t ps2_kerboard_init(void){
-  changecodeset(SCAN_CODE_SET2);
   uint8_t scodeset = getscodeset();
   if (scodeset == 0x43) {
-    terminal_writestring("Scan code set 1\n");
+    terminal_writestring("Current Scan code set 1\nCorrection to Scan code set2\n");
+    change_codeset(SCAN_CODE_SET2);
   } else if (scodeset == 0x41) {
     terminal_writestring("Scan code set 2\n");
   } else if (scodeset == 0x3f) {
-    terminal_writestring("Scan code set 3\n");
+    terminal_writestring("Current Scan code set 3\nCorrection to Scan code set2\n");
+    change_codeset(SCAN_CODE_SET2);
   } else {
-    terminal_writestring("Unknown scan code set\n");
+    terminal_writestring("Unknown scan code set\nPS/2 Emulation?\n");
     return 1;
   }
-  outb(0x60, 0xFA);
   return 0;
 
 }
@@ -70,13 +73,22 @@ void keyboard_input_int(void){
 }
 
 
+uint8_t enable_keyboard(void){
+  outb(0x60, 0xF4);
+  return getscode();
+}
+
+
 uint8_t getscodeset(void){
-  uint8_t code = 0;
+  while (inb(0x64) & 0x02);
   outb(0x60, 0xf0);
-  outb(0x60, 0x00);
-  code = getscode();
-  outb(0x60, 0xf4);
-  return code;
+  if (getscode() == 0xFA) {
+    while (inb(0x64) & 0x02);
+    outb(0x60, 0x00);
+    return getscode();
+  } else {
+    return 0x00;
+  }
 }
 
 
@@ -96,7 +108,7 @@ uint8_t getchar(void){
 }
 
 
-void changecodeset(uint8_t set){
+void change_codeset(uint8_t set){
   outb(0x60, 0xf0);
   outb(0x60, set);
 }

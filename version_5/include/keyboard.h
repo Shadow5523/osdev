@@ -4,6 +4,11 @@
 #include <stdint.h>
 #include <stddef.h>
 
+//command
+#define SET_TYPEMATIC_RATE   0xF3     //追加
+#define ENABLE_KEYBOARD      0xF4     //追加
+#define SET_SCANCODESET      0xF0     //追加
+
 #define SCAN_CODE_SET1 0x01
 #define SCAN_CODE_SET2 0x02
 #define SCAN_CODE_SET3 0x03
@@ -12,7 +17,7 @@
 #define TYPEMATICDELAY_SET1 0x01
 #define TYPEMATICDELAY_SET2 0x02
 #define PORTMAP_KEYBOARD1 0x60
-#define PORTMAP_KEYBOARD2 0x61
+#define PORTMAP_KEYBOARD2 0x64
 
 //構造体は全面的に変更
 typedef struct{
@@ -25,6 +30,7 @@ typedef struct{
 void key_init(void);
 uint8_t ps2_kerboard_init(void);
 void keyboard_input_int(uint8_t);
+uint8_t enable_keyboard(void);
 uint8_t getscode(void);
 uint8_t getchar(void);
 uint8_t getscodeset(void);

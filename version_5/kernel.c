@@ -4,10 +4,10 @@ extern key_buf kb;     //追加
 
 void kernel_main(void){
   terminal_initialize();
-  key_init();
   gdt_init();
   pic_init();
   idt_init();
+  key_init();
   terminal_writestring("Hello, kernel World! \n");
 
   /* 以下から変更 */
