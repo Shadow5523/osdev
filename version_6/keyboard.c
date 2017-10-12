@@ -15,11 +15,13 @@ void key_init(void){
   //追加
   ks.shift_enable = false;
   ks.caps_lock = false;
+  ks.num_lock = false;
 }
 
 
 uint8_t ps2_kerboard_init(void){
-  uint8_t scodeset = getscodeset();  
+  uint8_t scodeset = getscodeset();
+  
   if (scodeset == 0x43) {
     terminal_writestring("Current Scan code set 1\nCorrection to Scan code set2\n");
     change_codeset(SCAN_CODE_SET2);
@@ -38,38 +40,9 @@ uint8_t ps2_kerboard_init(void){
 
 
 void keyboard_input_int(uint8_t scan_code){
-  uint8_t us_keytable_set2[0x80] = {
-    '0', '0', '1', '2', '3', '4', '5', '6', '7', '8',
-    '9', '0', '-', '=', '\b', '\t', 'q', 'w', 'e', 'r',
-    't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n', '0',
-    'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',
-    '\'', '`', '0', '\\', 'z', 'x', 'c', 'v', 'b', 'n',
-    'm', ',', '.', '/', '0', '0', '0', ' ', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0'};
-
-  //追加
-  uint8_t us_keytable_set2S[0x80] = {
-    '0', '0', '!', '@', '#', '$', '%', '^', '&', '*',
-    '(', ')', '_', '+', '\b', '\t', 'Q', 'W', 'E', 'R',
-    'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n', '0',
-    'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',
-    '"', '~', '0', '|', 'Z', 'X', 'C', 'V', 'B', 'N',
-    'M', '<', '>', '?', '0', '0', '0', ' ', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0', '0', '0',
-    '0', '0', '0', '0', '0', '0', '0', '0'};
-
-  //ここから下は全般的に変更する
+  const keymap *key = &key_code;
+  uint8_t c = 0;
+  
   if (scan_code <= 0x80) {
     if (kb.len < 128) {
       if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
@@ -82,20 +55,51 @@ void keyboard_input_int(uint8_t scan_code){
       } else if (scan_code == CAPS_LOCK && ks.caps_lock) {
 	ks.caps_lock = false;
 	switch_capslock_led(SET_CAPSLOCK_LED & 0x03);
+
+      } else if (scan_code == NUM_LOCK && !ks.num_lock) {
+	ks.num_lock = true;
+	switch_capslock_led(SET_NUMLOCK_LED);
+
+      } else if (scan_code == NUM_LOCK && ks.num_lock) {
+	ks.num_lock = false;
+	switch_capslock_led(SET_NUMLOCK_LED & 0x02);
 	
       } else {
-	if (ks.shift_enable && !ks.caps_lock) {
-	  kb.pdata[kb.write++] = us_keytable_set2S[scan_code];
+	if (ks.num_lock) {
+	  c = key -> numlock[scan_code];
+	}
+
+	if (!c) {
+	  if (ks.shift_enable && !ks.caps_lock) {
+	    kb.pdata[kb.write++] = key -> shift[scan_code];
 	  
-	} else if (!ks.shift_enable && ks.caps_lock) {
-	  kb.pdata[kb.write++] = us_keytable_set2S[scan_code];
+	  } else if (!ks.shift_enable && ks.caps_lock) {
+	    if ((c = key -> base[scan_code]) >= 'a' && c <= 'z'){
+	      kb.pdata[kb.write++] = key -> shift[scan_code];
+	    
+	    }else{
+	      kb.pdata[kb.write++] = key -> base[scan_code];
+	    
+	    }
+	  }else if (ks.shift_enable && ks.caps_lock){
+	    if ((c = key -> base[scan_code]) >= 'a' && c <= 'z'){
+	      kb.pdata[kb.write++] = key -> base[scan_code];
+	      
+	    }else{
+	      kb.pdata[kb.write++] = key -> shift[scan_code];
+	      
+	    }
+	  } else {
+	    kb.pdata[kb.write++] = key -> base[scan_code];
 	  
+	  }
 	} else {
-	  kb.pdata[kb.write++] = us_keytable_set2[scan_code];
+	  kb.pdata[kb.write++] = c;
 	  
 	}
 	++kb.len;
 	if (kb.write == 128) { kb.write = 0; }
+	
       }
     }
   } else {
@@ -105,7 +109,7 @@ void keyboard_input_int(uint8_t scan_code){
     }
   }
 }
-
+     
 
 void switch_capslock_led(uint8_t set_led){
   while (inb(PORTMAP_KEYBOARD2) & 0x02);

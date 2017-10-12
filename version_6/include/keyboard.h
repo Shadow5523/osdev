@@ -24,13 +24,17 @@
 #define PORTMAP_KEYBOARD1    0x60
 #define PORTMAP_KEYBOARD2    0x64
 
+//keyled
 #define SET_CAPSLOCK_LED     0x04
+#define SET_NUMLOCK_LED      0x02
+#define SET_SCROLLLOCK_LED   0x01
 
 //追加
 #define L_SHIFT              0x2A
 #define R_SHIFT              0x36
 #define CAPS_LOCK            0x3A
-#define CAPS_LOCK_LED        0x02
+#define NUM_LOCK             0x45
+#define SCROLL_LOCK          0x46
 
 typedef struct{
   uint8_t pdata[128];
@@ -39,13 +43,21 @@ typedef struct{
   size_t len;
 }key_buf;
 
+typedef struct{
+  uint8_t base[0x80];
+  uint8_t shift[0x80];
+  uint8_t numlock[0x80];
+}keymap;
+
 //以下の構造体を追加する
 typedef struct{
   bool shift_enable;
   bool relese_enable;
   bool caps_lock;
+  bool num_lock;
 }key_stat;
 key_stat ks;     //追加
+const keymap key_code;     //追加
 
 void key_init(void);
 uint8_t ps2_kerboard_init(void);
