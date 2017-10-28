@@ -35,6 +35,6 @@ uint8_t getscode(void);
 uint8_t getchar(void);
 uint8_t getscodeset(void);
 void change_codeset(uint8_t);
-void change_trate_delay(uint8_t); 
+void change_trate_delay(uint8_t);     //追加
 
 #endif _KEYBOARD_H_
