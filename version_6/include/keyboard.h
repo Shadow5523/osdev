@@ -51,13 +51,17 @@ typedef struct{
 
 //以下の構造体を追加する
 typedef struct{
-  bool shift_enable;
-  bool relese_enable;
-  bool caps_lock;
-  bool num_lock;
-}key_stat;
-key_stat ks;     //追加
+  bool shift_enable:1;
+  bool relese_enable:1;
+  bool caps_lock:1;
+  bool num_lock:1;
+  bool scr_lock:1;
+  uint8_t led_stat;
+}kb_stat;
+
+kb_stat ks;     //追加
 const keymap key_code;     //追加
+bool ext_input;     //追加
 
 void key_init(void);
 uint8_t ps2_kerboard_init(void);

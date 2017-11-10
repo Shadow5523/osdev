@@ -13,9 +13,9 @@ void key_init(void){
   }
   
   //追加
-  ks.shift_enable = false;
-  ks.caps_lock = false;
-  ks.num_lock = false;
+  //ks.shift_enable = false;
+  //ks.caps_lock = false;
+  //ks.num_lock = false;
 }
 
 
@@ -42,64 +42,64 @@ uint8_t ps2_kerboard_init(void){
 void keyboard_input_int(uint8_t scan_code){
   const keymap *key = &key_code;
   uint8_t c = 0;
-  
+
+  if (scan_code == 0xE0) {
+    if (!ext_input) {
+      ext_input = true;
+    } else {
+      ext_input = false;
+    }
+  }
   if (scan_code <= 0x80) {
     if (kb.len < 128) {
       if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
 	ks.shift_enable = true;
-	
       } else if (scan_code == CAPS_LOCK && !ks.caps_lock) {
 	ks.caps_lock = true;
-	switch_capslock_led(SET_CAPSLOCK_LED);
-	
+	ks.led_stat += SET_CAPSLOCK_LED;
+	switch_capslock_led(ks.led_stat);
       } else if (scan_code == CAPS_LOCK && ks.caps_lock) {
 	ks.caps_lock = false;
-	switch_capslock_led(SET_CAPSLOCK_LED & 0x03);
-
+	ks.led_stat -= SET_CAPSLOCK_LED;
+	switch_capslock_led(ks.led_stat);
       } else if (scan_code == NUM_LOCK && !ks.num_lock) {
 	ks.num_lock = true;
-	switch_capslock_led(SET_NUMLOCK_LED);
-
+	ks.led_stat += SET_NUMLOCK_LED;
+	switch_capslock_led(ks.led_stat);
       } else if (scan_code == NUM_LOCK && ks.num_lock) {
 	ks.num_lock = false;
-	switch_capslock_led(SET_NUMLOCK_LED & 0x02);
-	
+	ks.led_stat -= SET_NUMLOCK_LED;
+	switch_capslock_led(ks.led_stat);
       } else {
 	if (ks.num_lock) {
 	  c = key -> numlock[scan_code];
+	  ext_input = false;
 	}
-
 	if (!c) {
-	  if (ks.shift_enable && !ks.caps_lock) {
-	    kb.pdata[kb.write++] = key -> shift[scan_code];
-	  
+	  if (ext_input && scan_code == 0x35) {
+	    kb.pdata[kb.write++] = '\0';
+	  } else if (ks.shift_enable && !ks.caps_lock) {
+	    kb.pdata[kb.write++] = key -> shift[scan_code];	    
 	  } else if (!ks.shift_enable && ks.caps_lock) {
 	    if ((c = key -> base[scan_code]) >= 'a' && c <= 'z'){
-	      kb.pdata[kb.write++] = key -> shift[scan_code];
-	    
+	      kb.pdata[kb.write++] = key -> shift[scan_code];	    
 	    }else{
 	      kb.pdata[kb.write++] = key -> base[scan_code];
-	    
 	    }
 	  }else if (ks.shift_enable && ks.caps_lock){
 	    if ((c = key -> base[scan_code]) >= 'a' && c <= 'z'){
 	      kb.pdata[kb.write++] = key -> base[scan_code];
-	      
 	    }else{
 	      kb.pdata[kb.write++] = key -> shift[scan_code];
-	      
 	    }
 	  } else {
 	    kb.pdata[kb.write++] = key -> base[scan_code];
-	  
 	  }
 	} else {
 	  kb.pdata[kb.write++] = c;
-	  
 	}
 	++kb.len;
 	if (kb.write == 128) { kb.write = 0; }
-	
       }
     }
   } else {
