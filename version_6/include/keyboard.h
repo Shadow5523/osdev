@@ -66,12 +66,13 @@ bool ext_input;     //追加
 void key_init(void);
 uint8_t ps2_kerboard_init(void);
 void keyboard_input_int(uint8_t);
-void switch_capslock_led(uint8_t);
+void switch_kb_led(uint8_t);
 uint8_t enable_keyboard(void);
 uint8_t getscode(void);
 uint8_t getchar(void);
 uint8_t getscodeset(void);
 void change_codeset(uint8_t);
 void change_trate_delay(uint8_t);
+void input_bufdata(uint8_t);
 
 #endif _KEYBOARD_H_

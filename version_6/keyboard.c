@@ -10,18 +10,12 @@ void key_init(void){
   }
   if (!ps2_kerboard_init()) {
     terminal_writestring("PS/2 Keyboard init OK\n");
-  }
-  
-  //追加
-  //ks.shift_enable = false;
-  //ks.caps_lock = false;
-  //ks.num_lock = false;
+  }  
 }
 
 
 uint8_t ps2_kerboard_init(void){
-  uint8_t scodeset = getscodeset();
-  
+  uint8_t scodeset = getscodeset();  
   if (scodeset == 0x43) {
     terminal_writestring("Current Scan code set 1\nCorrection to Scan code set2\n");
     change_codeset(SCAN_CODE_SET2);
@@ -35,14 +29,10 @@ uint8_t ps2_kerboard_init(void){
     return 1;
   }
   return 0;
-
 }
 
 
 void keyboard_input_int(uint8_t scan_code){
-  const keymap *key = &key_code;
-  uint8_t c = 0;
-
   if (scan_code == 0xE0) {
     if (!ext_input) {
       ext_input = true;
@@ -57,47 +47,29 @@ void keyboard_input_int(uint8_t scan_code){
       } else if (scan_code == CAPS_LOCK && !ks.caps_lock) {
 	ks.caps_lock = true;
 	ks.led_stat += SET_CAPSLOCK_LED;
-	switch_capslock_led(ks.led_stat);
+	switch_kb_led(ks.led_stat);
       } else if (scan_code == CAPS_LOCK && ks.caps_lock) {
 	ks.caps_lock = false;
 	ks.led_stat -= SET_CAPSLOCK_LED;
-	switch_capslock_led(ks.led_stat);
+	switch_kb_led(ks.led_stat);
       } else if (scan_code == NUM_LOCK && !ks.num_lock) {
 	ks.num_lock = true;
 	ks.led_stat += SET_NUMLOCK_LED;
-	switch_capslock_led(ks.led_stat);
+	switch_kb_led(ks.led_stat);
       } else if (scan_code == NUM_LOCK && ks.num_lock) {
 	ks.num_lock = false;
 	ks.led_stat -= SET_NUMLOCK_LED;
-	switch_capslock_led(ks.led_stat);
+	switch_kb_led(ks.led_stat);
+      } else if (scan_code == SCROLL_LOCK && !ks.scr_lock) {
+	ks.scr_lock = true;
+	ks.led_stat += SET_SCROLLLOCK_LED;
+	switch_kb_led(ks.led_stat);
+      } else if (scan_code == SCROLL_LOCK && ks.scr_lock) {
+	ks.scr_lock = false;
+	ks.led_stat -= SET_SCROLLLOCK_LED;
+	switch_kb_led(ks.led_stat);
       } else {
-	if (ks.num_lock) {
-	  c = key -> numlock[scan_code];
-	  ext_input = false;
-	}
-	if (!c) {
-	  if (ext_input && scan_code == 0x35) {
-	    kb.pdata[kb.write++] = '\0';
-	  } else if (ks.shift_enable && !ks.caps_lock) {
-	    kb.pdata[kb.write++] = key -> shift[scan_code];	    
-	  } else if (!ks.shift_enable && ks.caps_lock) {
-	    if ((c = key -> base[scan_code]) >= 'a' && c <= 'z'){
-	      kb.pdata[kb.write++] = key -> shift[scan_code];	    
-	    }else{
-	      kb.pdata[kb.write++] = key -> base[scan_code];
-	    }
-	  }else if (ks.shift_enable && ks.caps_lock){
-	    if ((c = key -> base[scan_code]) >= 'a' && c <= 'z'){
-	      kb.pdata[kb.write++] = key -> base[scan_code];
-	    }else{
-	      kb.pdata[kb.write++] = key -> shift[scan_code];
-	    }
-	  } else {
-	    kb.pdata[kb.write++] = key -> base[scan_code];
-	  }
-	} else {
-	  kb.pdata[kb.write++] = c;
-	}
+	input_bufdata(scan_code);
 	++kb.len;
 	if (kb.write == 128) { kb.write = 0; }
       }
@@ -111,7 +83,7 @@ void keyboard_input_int(uint8_t scan_code){
 }
      
 
-void switch_capslock_led(uint8_t set_led){
+void switch_kb_led(uint8_t set_led){
   while (inb(PORTMAP_KEYBOARD2) & 0x02);
   outb(PORTMAP_KEYBOARD1, SWITCH_LED);
   while (inb(PORTMAP_KEYBOARD2) & 0x02);
@@ -165,4 +137,39 @@ void change_trate_delay(uint8_t set){
   outb(PORTMAP_KEYBOARD1, SET_TYPEMATIC_RATE);
   while (inb(PORTMAP_KEYBOARD2) & 0x02);
   outb(PORTMAP_KEYBOARD1, set);
+}
+
+
+void input_bufdata(uint8_t scan_code) {
+  const keymap *key = &key_code;
+  uint8_t numpad_data = 0;
+  
+  if (ks.num_lock) {
+    numpad_data = key -> numlock[scan_code];
+    ext_input = false;
+  }
+  
+  if (!numpad_data) {
+    if (ext_input && scan_code == 0x35) {
+      kb.pdata[kb.write++] = '\0';
+    } else if (ks.shift_enable && !ks.caps_lock) {
+      kb.pdata[kb.write++] = key -> shift[scan_code];
+    } else if (!ks.shift_enable && ks.caps_lock) {
+      if ((numpad_data = key -> base[scan_code]) >= 'a' && numpad_data <= 'z'){
+	kb.pdata[kb.write++] = key -> shift[scan_code];
+      }else{
+	kb.pdata[kb.write++] = key -> base[scan_code];
+      }
+    }else if (ks.shift_enable && ks.caps_lock){
+      if ((numpad_data = key -> base[scan_code]) >= 'a' && numpad_data <= 'z'){
+	kb.pdata[kb.write++] = key -> base[scan_code];
+      }else{
+	kb.pdata[kb.write++] = key -> shift[scan_code];
+      }
+    } else {
+      kb.pdata[kb.write++] = key -> base[scan_code];
+    }
+  } else {
+    kb.pdata[kb.write++] = numpad_data;
+  }
 }
