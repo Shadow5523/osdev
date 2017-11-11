@@ -25,7 +25,7 @@ C言語, GNU Assembler
 6. [OSを自作してみる6 ～割り込み経由でのキー入力～](http://shadows.dip.jp/?p=508)  
    ソースコード : [version_5](/version_5)  
 
-7. [OSを自作してみる7 ～キーボード入力2～](http://shadows.dip.jp/?p=667)
+7. [OSを自作してみる7 ～キーボード入力2～](http://shadows.dip.jp/?p=667)  
    ソースコード : [version_6](/version_6)  
   
   
