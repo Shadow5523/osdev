@@ -3,13 +3,12 @@
 int sh_printf(const unsigned char* format, ...){
   va_list parameter;
   int count = 0, num = 0;
-  size_t count2 = 0;
   size_t amount = 0;
   size_t len;
 
   va_start(parameter, format);
 
-  while (*format != '\0' && count2 != 100) {
+  while (*format != '\0') {
     size_t maxrem = INT_MAX - count;
     if (format[0] != '%' || format[1] == '%') {
       if (format[0] == '%') { ++format; }
@@ -54,10 +53,16 @@ int sh_printf(const unsigned char* format, ...){
       num = va_arg(parameter, int);
       sh_itoa(num, str2, 16);
       if (!data_to_print(str2)) { return -1; }
+      break;
 
+    default:
+      format = format_begun_at;
+      if ((len = sh_strlen(format) - 1) > maxrem) { return -1; }
+      data_to_print(format);
+      format += len;
+      count += len;
     }
     num = 0;
-    count2++;
   }
   va_end(parameter);
   return 0;
