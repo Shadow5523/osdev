@@ -2,22 +2,19 @@
 
 int sh_printf(const unsigned char* format, ...){
   va_list parameter;
-  int count = 0, num = 0;
+  int num = 0;
   size_t amount = 0;
-  size_t len;
+  size_t len = 0;
 
   va_start(parameter, format);
 
   while (*format != '\0') {
-    size_t maxrem = INT_MAX - count;
     if (format[0] != '%' || format[1] == '%') {
       if (format[0] == '%') { ++format; }
       amount = 1;
       while (format[amount] && format[amount] != '%') { ++amount; }
-      if (maxrem < amount) { return -1; }
       if (!print(format, amount)) { return -1; }
       format += amount;
-      count += amount;
       continue;
     }
 
@@ -57,10 +54,9 @@ int sh_printf(const unsigned char* format, ...){
 
     default:
       format = format_begun_at;
-      if ((len = sh_strlen(format) - 1) > maxrem) { return -1; }
+      len = sh_strlen(format) - 1;
       data_to_print(format);
       format += len;
-      count += len;
     }
     num = 0;
   }
