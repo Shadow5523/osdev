@@ -2,12 +2,17 @@
 
 int sh_printf(const unsigned char* format, ...){
   va_list parameter;
-  int num = 0;
-  size_t amount = 0;
-  size_t len = 0;
-
   va_start(parameter, format);
+  sh_vprintf(format, parameter);
+  va_end(format);
+  return 0;
+}
 
+
+int sh_vprintf(const unsigned char* format, va_list parameter) {
+  unsigned long num = 0;
+  size_t amount = 0;
+  
   while (*format != '\0') {
     if (format[0] != '%' || format[1] == '%') {
       if (format[0] == '%') { ++format; }
@@ -23,61 +28,52 @@ int sh_printf(const unsigned char* format, ...){
     switch (*format) {
     case 's':
       ++format;
-      const char* str3 = va_arg(parameter, const char*);
-      if (!data_to_print(str3)) { return -1; }
+      const char* string = va_arg(parameter, const char*);
+      if (!print(string, sh_strlen(string))) { return -1; }
       break;
 
     case 'c':
       ++format;
-      unsigned char str4[2];
-      str4[0] = (char)va_arg(parameter, int);
-      str4[1] = '\0';
-      if (!data_to_print(str4)) { return -1; }
+      unsigned char chardata[2];
+      chardata[0] = (char)va_arg(parameter, int);
+      chardata[1] = '\0';
+      if (!print(chardata, sh_strlen(chardata))) { return -1; }
       break;
 
     case 'i':
     case 'd':
       ++format;
-      unsigned char str1[8];
+      unsigned char decimaldata[6];
       num = va_arg(parameter, int);
-      sh_itoa(num, str1, 10);
-      if (!data_to_print(str1)) { return -1; }
+      sh_itoa(num, decimaldata, 10);
+      if (!print(decimaldata, sh_strlen(decimaldata))) { return -1; }
       break;
 
     case 'x':
       ++format;
-      unsigned char str2[8];
-      num = va_arg(parameter, int);
-      sh_itoa(num, str2, 16);
-      if (!data_to_print(str2)) { return -1; }
+      unsigned char hexdata[9];
+      num = va_arg(parameter, unsigned long);
+      sh_itoa(num, hexdata, 16);
+      if (!print(hexdata, sh_strlen(hexdata))) { return -1; }
       break;
 
     default:
       format = format_begun_at;
-      len = sh_strlen(format) - 1;
-      data_to_print(format);
-      format += len;
+      if (!print(format, sh_strlen(format))) { return -1; }
+      format += sh_strlen(format);
     }
     num = 0;
   }
-  va_end(parameter);
   return 0;
-}
 
-
-int data_to_print(const unsigned char* str) {
-  size_t len;
-  len = sh_strlen(str) + 1;
-  if (!print(str, len)) {return -1; }
-  return 0;
 }
 
 
 static bool print(const unsigned char* data, size_t length) {
   const unsigned char* bytes = (const unsigned char*) data;
-  size_t i;
-  for (i = 0; i < length; i++)
+  for (size_t i = 0; i < length; i++) {
     if (sh_putchar(bytes[i]) == '\0') { return false; }
+  }
   return true;
 }
 

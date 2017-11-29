@@ -10,7 +10,8 @@
 #include "../../include/terminal.h"
 
 int sh_printf(const unsigned char*, ...);
-int data_to_print(const unsigned char*);
+int sh_vprintf(const unsigned char*, va_list);
 static bool print(const unsigned char*, size_t);
+int sh_putchar(int);
 
 #endif _STDIO_H_

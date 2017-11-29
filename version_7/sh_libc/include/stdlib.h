@@ -3,6 +3,6 @@
 
 #include <stddef.h>
 
-void  sh_itoa(int, unsigned char*, int);
+void sh_itoa(unsigned long, unsigned char*, unsigned int);
 
 #endif _STDLIB_H_
