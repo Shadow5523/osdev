@@ -1,7 +1,7 @@
 all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
-      stdlib.o string.o
+      stdlib.o string.o getmmap.o
 OBJAS = interruptas.o idts.o gdts.o boot.o
 
 
@@ -16,6 +16,7 @@ DRVDIR = drivers/
 KRNDIR = kernel/
 SHLIBC = sh_libc/
 SHLIBCINC = sh_libc/include/
+MEMDIR = memory/
 
 
 interruptas.o: $(KRNDIR)interrupt.s
@@ -54,7 +55,7 @@ keyboard.o: $(DRVDIR)keyboard.c $(INCLUDEDIR)keyboard.h
 terminal.o: $(DRVDIR)terminal.c $(INCLUDEDIR)terminal.h $(INCLUDEDIR)vga.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
-kernel.o: $(KRNDIR)kernel.c $(INCLUDEDIR)kernel.h
+kernel.o: $(KRNDIR)kernel.c $(INCLUDEDIR)kernel.h $(INCLUDEDIR)multiboot.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 stdio.o: $(SHLIBC)stdio.c $(SHLIBCINC)stdio.h
@@ -64,6 +65,9 @@ stdlib.o: $(SHLIBC)stdlib.c $(SHLIBCINC)stdlib.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 string.o: $(SHLIBC)string.c $(SHLIBCINC)string.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+
+getmmap.o: $(MEMDIR)getmmap.c $(INCLUDEDIR)getmmap.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 create: $(OBJAS) $(OBJ)
