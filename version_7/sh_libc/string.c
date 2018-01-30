@@ -17,3 +17,9 @@ void sh_strrev(unsigned char* str) {
     str[j] = tmp;
   }
 }
+
+char* sh_strcpy(char *s1, const char *s2) {
+  char *temp = s1;
+  while ((*temp++ = *s2++) != 0);
+  return (s1);
+}
