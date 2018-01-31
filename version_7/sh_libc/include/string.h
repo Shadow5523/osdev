@@ -6,5 +6,6 @@
 
 size_t sh_strlen(const uint8_t*);
 void sh_strrev(unsigned char*);
+char* sh_strcpy(char*, const char*);
 
 #endif _STDIO_H_
