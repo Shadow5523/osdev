@@ -34,7 +34,7 @@ boot.o: boot.s
 interrupt.o: $(KRNDIR)interrupt.c $(INCLUDEDIR)interrupt.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
-pic.o: $(DRVDIR)pic.c $(INCLUDEDIR)pic.h
+pic.o: $(ARCHDIR)pic.c $(INCLUDEDIR)pic.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 idt.o: $(ARCHDIR)idt.c $(INCLUDEDIR)idt.h
