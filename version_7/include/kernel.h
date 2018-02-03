@@ -23,6 +23,7 @@
 #include "multiboot.h"
 #include "getmmap.h"
 #include "../sh_libc/include/stdio.h"
+#include "../sh_libc/include/math.h"
 
 uint8_t* c[2];
 

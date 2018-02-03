@@ -5,9 +5,9 @@ void getmmap(multiboot_info_t* mbt){
   char* type_str;
 
   sh_printf("\n\n================get memory map=====================\n");
-  
+
   for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length); mmap++) {
-    
+
     switch (mmap -> type) {
     case 0x1:;
       sh_strcpy(type_str, "available RAM");
@@ -24,10 +24,14 @@ void getmmap(multiboot_info_t* mbt){
     }
     if (mmap -> base_addr_high == 0x0) {
       sh_printf("base_addr = 0x%x: ", mmap -> base_addr_low);
+    } else {
+      sh_printf("base_addr = 0x%x%08x: ", mmap -> base_addr_high, mmap -> base_addr_low);
+    }
+
+    if (mmap -> length_high == 0x0) {
       sh_printf("length = 0x%x: ", mmap -> length_low);
     } else {
-      sh_printf("base_addr = 0x%x%x: ", mmap -> base_addr_high, mmap -> base_addr_low);
-      sh_printf("length = 0x%x%x: ", mmap -> length_high, mmap -> length_low);
+      sh_printf("length = 0x%x%08x: ", mmap -> length_high, mmap -> length_low);
     }
     sh_printf("type = %s\n", type_str);
   }

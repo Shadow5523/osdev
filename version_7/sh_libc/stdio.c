@@ -12,6 +12,7 @@ int sh_printf(const unsigned char* format, ...){
 int sh_vprintf(const unsigned char* format, va_list parameter) {
   unsigned long num = 0;
   size_t amount = 0;
+  bool flag = false;
   
   while (*format != '\0') {
     if (format[0] != '%' || format[1] == '%') {
@@ -24,7 +25,22 @@ int sh_vprintf(const unsigned char* format, va_list parameter) {
     }
 
     const char* format_begun_at = format++;
+    unsigned int length = 0;
 
+    //length
+    if (*format == '0'){
+      flag = true;
+      format++;
+      while(*format >= '0' && *format <= '9'){
+	length = (length * 10) + (*format - '0');
+	format++;
+      }
+    }
+
+    char pading[255];
+    pading[length - 1] = '\0';
+
+    //type
     switch (*format) {
     case 's':
       ++format;
@@ -43,20 +59,41 @@ int sh_vprintf(const unsigned char* format, va_list parameter) {
     case 'i':
     case 'd':
       ++format;
-      unsigned char decimaldata[6];
+      unsigned char decimaldata[11];
       num = va_arg(parameter, int);
+      
       sh_itoa(num, decimaldata, 10);
-      if (!print(decimaldata, sh_strlen(decimaldata))) { return -1; }
+      if (flag && sh_strlen(decimaldata) - 1 < length) {
+	for (int i = 0; i < length - sh_strlen(decimaldata); i++) {
+	  pading[i] = '0';
+	}
+	sh_strcat(pading, decimaldata);
+	if (!print(pading, sh_strlen(pading))) { return -1; }
+	flag = false;
+      } else {
+	if (!print(decimaldata, sh_strlen(decimaldata))) { return -1; }
+      }
+      
       break;
-
+      
     case 'x':
       ++format;
       unsigned char hexdata[9];
       num = va_arg(parameter, unsigned long);
+      
       sh_itoa(num, hexdata, 16);
-      if (!print(hexdata, sh_strlen(hexdata))) { return -1; }
+      if (flag && sh_strlen(hexdata) - 1 < length) {
+	for (int i = 0; i < length - sh_strlen(hexdata); i++) {
+	  pading[i] = '0';
+	}
+	sh_strcat(pading, hexdata);
+	if (!print(pading, sh_strlen(pading))) { return -1; }
+	flag = false;
+      } else {
+	if (!print(hexdata, sh_strlen(hexdata))) { return -1; }
+      }
       break;
-
+      
     default:
       format = format_begun_at;
       if (!print(format, sh_strlen(format))) { return -1; }

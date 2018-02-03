@@ -1,7 +1,7 @@
 all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
-      stdlib.o string.o getmmap.o
+      stdlib.o string.o math.o getmmap.o
 OBJAS = interruptas.o idts.o gdts.o boot.o
 
 
@@ -65,6 +65,9 @@ stdlib.o: $(SHLIBC)stdlib.c $(SHLIBCINC)stdlib.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 string.o: $(SHLIBC)string.c $(SHLIBCINC)string.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+
+math.o: $(SHLIBC)math.c $(SHLIBCINC)math.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 getmmap.o: $(MEMDIR)getmmap.c $(INCLUDEDIR)getmmap.h
