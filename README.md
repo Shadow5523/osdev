@@ -27,8 +27,9 @@ GCC バージョン : gcc version 6.3.0
 7. [OSを自作してみる7 ～キーボード入力2～](http://shadows.dip.jp/?p=667)  
    ソースコード : [version_6](/version_6)  
 
-8.[OSを自作してみる8 ～簡易libc(printfなど)を自作 & メモリマップ取得～](http://shadows.dip.jp/?p=711)  
+8. [OSを自作してみる8 ～簡易libc(printfなど)を自作 & メモリマップ取得～](http://shadows.dip.jp/?p=711)  
    ソースコード : [version_7](/version_7)  
+
 
 ## 参考資料
 [OSDev.org](http://wiki.osdev.org/Main_Page)  
