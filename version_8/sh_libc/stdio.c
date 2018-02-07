@@ -109,3 +109,8 @@ int sh_putchar(int intchar) {
   terminal_write(&ch, sizeof(ch));
   return intchar;
 }
+
+
+unsigned char sh_getchar(void){
+  return getscode();
+}

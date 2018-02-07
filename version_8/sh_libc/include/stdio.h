@@ -16,5 +16,6 @@ int sh_vprintf(const unsigned char*, va_list);
 void numeral_formatting(int, int, int);
 static bool print(const unsigned char*, size_t);
 int sh_putchar(int);
+unsigned char sh_getchar(void);
 
 #endif _STDIO_H_
