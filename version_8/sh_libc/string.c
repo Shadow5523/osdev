@@ -20,9 +20,9 @@ void sh_strrev(unsigned char* str) {
 
 
 char* sh_strcpy(char *s1, const char *s2) {
-  char *temp = s1;
+  char* temp = s1;
   while ((*temp++ = *s2++) != 0);
-  return (s1);
+  return s1;
 }
 
 
@@ -33,4 +33,12 @@ char* sh_strcat(char *s1, const char *s2){
     s1[i + j] = s2[j];
   s1[i + j] = '\0';
   return s1;
+}
+
+
+void* sh_memcpy(void* restrict dst_ptr, const void* restrict src_ptr, size_t size){
+  unsigned char* dst = (unsigned char*)dst_ptr;
+  const unsigned char* src = (const unsigned char*)src_ptr;
+  for (size_t i = 0; i < size; i++) { dst[i] = src[i]; }
+  return dst_ptr;
 }
