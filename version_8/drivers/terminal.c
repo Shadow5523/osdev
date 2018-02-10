@@ -33,7 +33,7 @@ void terminal_uponerow(void){
       const size_t index = y * VGA_WIDTH + x;
       t_buffer[(y - 1) * VGA_WIDTH + x] = t_buffer[index];
       if (y == (VGA_HEIGHT - 1)) {
-        t_buffer[index] = vga_entry(' ', t_color);
+	t_buffer[index] = vga_entry(' ', t_color);
       }
     }
   }
@@ -56,11 +56,18 @@ void terminal_putchar(uint8_t c){
   } else if(c == '\b') {
     c = 0;
     t_buffer[(t_row * VGA_WIDTH + t_column) - 1] = vga_entry(' ', t_color);
-    if (--t_column <= 0) {
-      t_column = VGA_WIDTH;
+    if ( t_column > 8 ) {
+      if (--t_column <= 7) {
+	t_column = 7;
+
+      /*プロンプト時は以下は無効
+      t_column = VGA_WIDTH
+
       if (--t_row < 2) {
         t_row = 2;
         t_column = 0;
+      }
+      */
       }
     }
     return;

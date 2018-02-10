@@ -25,8 +25,9 @@
 #include "../sh_libc/include/stdio.h"
 #include "../sh_libc/include/math.h"
 
-uint8_t* c[2];
-
 #if defined(__cplusplus)
 us_keytableextern "C"
+
+void prompt(char*);
+
 #endif
