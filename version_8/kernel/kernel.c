@@ -1,23 +1,27 @@
 #include "../include/kernel.h"
 
 extern key_buf kb;
+extern size_t pmstr_len;
+size_t pmstr_len;
 
 void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
+  sh_printf("Initialize Terminal... OK\n");
   gdt_init();
   pic_init();
   idt_init();
   key_init();
   getmmap(mbt);
   sh_printf("Hello, kernel World! \n\n");
-
-  char *prompt_name = "prompt";
-  sh_printf("\n%s> ", prompt_name);
-  prompt(prompt_name);
+  prompt();
 }
 
 
-void prompt(char* prompt_name){
+void prompt(void){
+  char *prompt_name = "prompt";
+  pmstr_len = sh_strlen(prompt_name);
+  sh_printf("\n%s> ", prompt_name);
+
   kb.len = 0;
   kb.write = 0;
   kb.read = 0;

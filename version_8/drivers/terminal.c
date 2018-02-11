@@ -1,6 +1,8 @@
 #include "../include/terminal.h"
 #include "../include/vga.h"
 
+extern size_t pmstr_len;
+
 void terminal_initialize(void){
   t_row = 0;
   t_column = 0;
@@ -12,7 +14,6 @@ void terminal_initialize(void){
       t_buffer[index] = vga_entry(' ', t_color);
     }
   }
-  terminal_writestring("Initialize Terminal... OK\n");
 }
 
 
@@ -56,18 +57,19 @@ void terminal_putchar(uint8_t c){
   } else if(c == '\b') {
     c = 0;
     t_buffer[(t_row * VGA_WIDTH + t_column) - 1] = vga_entry(' ', t_color);
-    if ( t_column > 8 ) {
-      if (--t_column <= 7) {
-	t_column = 7;
+    if ( t_column > pmstr_len + 2 ) {
+      if (--t_column <= pmstr_len) {
+	t_column = pmstr_len;
 
-      /*プロンプト時は以下は無効
-      t_column = VGA_WIDTH
 
-      if (--t_row < 2) {
-        t_row = 2;
-        t_column = 0;
-      }
-      */
+	/*プロンプト時は以下は無効 
+      t_column = VGA_WIDTH 
+ 
+      if (--t_row < 2) { 
+        t_row = 2; 
+        t_column = 0; 
+      } 
+	*/
       }
     }
     return;
