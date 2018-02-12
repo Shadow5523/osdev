@@ -27,21 +27,26 @@ void prompt(void){
   kb.read = 0;
 
   for (;;) {
-    asm volatile("cli");
-    if (!kb.len) {
-      asm volatile("sti");
-    } else {
-      char c = kb.pdata[kb.read];
-      --kb.len;
-      ++kb.read;
-      if (kb.read == 128) { kb.read = 0; }
-      asm volatile("sti");
+    input_char(prompt_name);
+  }
+}
 
-      if (c == '\n') {
-	sh_printf("\n%s> ", prompt_name);
-      } else {
-	sh_printf("%c", c);
-      }
+
+void input_char(char* prompt_name){
+  asm volatile("cli");
+  if (!kb.len) {
+    asm volatile("sti");
+  } else {
+    char c = kb.pdata[kb.read];
+    --kb.len;
+    ++kb.read;
+    if (kb.read == 128) { kb.read = 0; }
+    asm volatile("sti");
+
+    if (c == '\n') {
+      sh_printf("\n%s> ", prompt_name);
+    } else {
+      sh_printf("%c", c);
     }
   }
 }

@@ -28,6 +28,7 @@
 #if defined(__cplusplus)
 us_keytableextern "C"
 
-void prompt(char*);
+void prompt(void);
+void input_char(char*);
 
 #endif
