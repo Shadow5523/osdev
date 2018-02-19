@@ -38,7 +38,7 @@ GCC バージョン : gcc version 6.3.0
 [０から作るソフトウェア開発](http://softwaretechnique.jp/OS_Development/scratchbuild.html)  
 [30日でできる！　OS自作入門](https://books.google.co.jp/books/about/30%E6%97%A5%E3%81%A7%E3%81%A7%E3%81%8D%E3%82%8B_OS%E8%87%AA%E4%BD%9C%E5%85%A5%E9%96%80.html?id=ilSvAgAAQBAJ&source=kp_cover&redir_esc=y)  
 [OSのようなもの](http://d.hatena.ne.jp/wocota/searchdiary?word=%2A%5B%BC%AB%BA%EEOS%5D)
-[システムコールの呼び出し方メモ](https://qiita.com/kure/items/5a1a114f9a37aeab255c)
-[x86_64環境でシステムコールを発行する](http://sugawarayusuke.hatenablog.com/entry/2016/04/22/213251)  
+[システムコールの呼び出し方メモ](https://qiita.com/kure/items/5a1a114f9a37aeab255c)  
+[x86_64環境でシステムコールを発行する](http://sugawarayusuke.hatenablog.com/entry/2016/04/22/213251)    
 
 <center><img src="http://shadows.dip.jp/wp-content/uploads/2017/09/githubへ投稿.png" alt="" width="30%"/></center>
