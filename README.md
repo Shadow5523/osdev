@@ -31,7 +31,13 @@ GCC バージョン : gcc version 6.3.0
    ソースコード : [version_7](/version_7)  
   
 9. [OSを自作してみる9 ～簡易プロンプトとコマンドを実装～](http://shadows.dip.jp/?p=1077)  
-   ソースコード : [version_8](/version_8)  
+   ソースコード : [version_8](/version_8)
+  
+
+##コンパイル済イメージファイル
+最新版のイメージファイルを以下に配置しておきます。  
+   [myos.iso](/imgfile)  
+
   
 ## 参考資料
 [OSDev.org](http://wiki.osdev.org/Main_Page)  
