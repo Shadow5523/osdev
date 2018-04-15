@@ -14,6 +14,10 @@ void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   key_init();
   getmmap(mbt);
   sh_printf("Hello, kernel World! \n\n");
+
+  //system call test
+  sh_write(1, "test\n", 10);
+  
   prompt();
 }
 
@@ -24,12 +28,6 @@ void prompt(void){
   char *prompt_name = "prompt";
   pmstr_len = sh_strlen(prompt_name);
   sh_printf("\n%s> ", prompt_name);
-
-
-  //start test
-  //char* test;
-  //sh_write(1, test, 10);
-  //end test
 
   kb.len = 0;
   kb.write = 0;

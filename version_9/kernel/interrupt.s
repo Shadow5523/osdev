@@ -23,25 +23,22 @@ as_keyboard_interrupt:
 
 
 as_software_interrupt:
-	      pushl %esp
-	      pushl %ebp
-	      pushl %esi
-	      pushl %edi
-
-	      pushl %edx
-	      pushl %ecx
-	      pushl %ebx
-	      pushl %eax
-	      call syscall_interrupt
-	      popl %eax
-	      popl %ebx
-	      popl %ecx
-	      popl %edx
-
-	      popl %edi
-	      popl %esi
-	      popl %ebp
-	      popl %esp
-	      iretl
-
-
+	 pushl %esp
+	 pushl %ebp
+	 pushl %esi
+	 pushl %edi
+	 pushl %edx
+	 pushl %ecx
+	 pushl %ebx
+	 pushl %eax
+	 call syscall_interrupt	
+	 popl %eax
+	 popl %ebx
+	 popl %ecx
+	 popl %edx
+	 popl %edi
+	 popl %esi
+	 popl %ebp
+	 popl %esp
+	 iretl
+	

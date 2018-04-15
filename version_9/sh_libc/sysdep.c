@@ -1,9 +1,9 @@
 #include "include/sysdep.h"
 
-uint32_t system_call(uint32_t syscall_num, void* arg1, void* arg2, void* arg3){
+uint32_t system_call(uint32_t syscall_num, uint32_t arg1, uint32_t arg2, uint32_t arg3){
   uint32_t ret;
-  asm volatile("int $0x80"
+  asm volatile("\tint $0x80\n"
                :"=a"(ret)
-               : "a"(syscall_num), "b"(1), "c"(2), "d"(3));
+               : "a"(syscall_num), "b"(arg1), "c"(arg2), "d"(arg3));
   return ret;
 }

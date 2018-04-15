@@ -1,8 +1,9 @@
 all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
-      stdlib.o string.o math.o getmmap.o io.o syscall.o \
-      sysdep.o
+      stdlib.o string.o math.o getmmap.o io.o sysdep.o \
+      syscall.o
+
 OBJAS = interruptas.o idts.o gdts.o boot.o
 
 
@@ -35,12 +36,6 @@ boot.o: boot.s
 interrupt.o: $(KRNDIR)interrupt.c $(INCLUDEDIR)interrupt.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
-kernel.o: $(KRNDIR)kernel.c $(INCLUDEDIR)kernel.h $(INCLUDEDIR)multiboot.h
-	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
-
-syscall.o: $(KRNDIR)syscall.c $(INCLUDEDIR)syscall.h
-	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
-
 pic.o: $(ARCHDIR)pic.c $(INCLUDEDIR)pic.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
@@ -60,6 +55,12 @@ keyboard.o: $(DRVDIR)keyboard.c $(INCLUDEDIR)keyboard.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 terminal.o: $(DRVDIR)terminal.c $(INCLUDEDIR)terminal.h $(INCLUDEDIR)vga.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+
+kernel.o: $(KRNDIR)kernel.c $(INCLUDEDIR)kernel.h $(INCLUDEDIR)multiboot.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+
+syscall.o: $(KRNDIR)syscall.c $(INCLUDEDIR)syscall.h $(INCLUDEDIR)syscallnum.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 stdio.o: $(SHLIBC)stdio.c $(SHLIBCINC)stdio.h

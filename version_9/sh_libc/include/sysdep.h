@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-uint32_t system_call(uint32_t, void*, void*, void*);
+uint32_t system_call(uint32_t, uint32_t, uint32_t, uint32_t);
 
 #endif _SYSDEP_H_
