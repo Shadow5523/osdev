@@ -6,31 +6,31 @@ OS : Linux(CentOS7.1)
 GCC バージョン : gcc version 6.3.0  
 
 ## 記事毎に使用したソースコードをまとめておきます。
-1. [OSを自作してみる1 ～Linuxで自作OSを作る環境を構築する～](http://shadows.dip.jp/?p=118)  
+1. [OSを自作してみる1 ～Linuxで自作OSを作る環境を構築する～](https://zeus.shadow-net.jp/?p=118)  
   
   
-2. [OSを自作してみる2 ～32ビットOSの作成～](http://shadows.dip.jp/?p=126)  
+2. [OSを自作してみる2 ～32ビットOSの作成～](https://zeus.shadow-net.jp/?p=126)  
    ソースコード : [version_1](/version_1)
   
-3. [OSを自作してみる3 ～キーボード入力～](http://shadows.dip.jp/?p=235)  
+3. [OSを自作してみる3 ～キーボード入力～](https://zeus.shadow-net.jp/?p=235)  
    ソースコード : [version_2](/version_2)
   
-4. [OSを自作してみる4 ～GDT初期化～](http://shadows.dip.jp/?p=337)  
+4. [OSを自作してみる4 ～GDT初期化～](https://zeus.shadow-net.jp/?p=337)  
    ソースコード : [version_3](/version_3)
   
-5. [OSを自作してみる5 ～IDT/PICの初期化～](http://shadows.dip.jp/?p=415)  
+5. [OSを自作してみる5 ～IDT/PICの初期化～](https://zeus.shadow-net.jp/?p=415)  
    ソースコード : [version_4](/version_4)  
 
-6. [OSを自作してみる6 ～割り込み経由でのキー入力～](http://shadows.dip.jp/?p=508)  
+6. [OSを自作してみる6 ～割り込み経由でのキー入力～](https://zeus.shadow-net.jp/?p=508)  
    ソースコード : [version_5](/version_5)  
 
-7. [OSを自作してみる7 ～キーボード入力2～](http://shadows.dip.jp/?p=667)  
+7. [OSを自作してみる7 ～キーボード入力2～](https://zeus.shadow-net.jp/?p=667)  
    ソースコード : [version_6](/version_6)  
 
-8. [OSを自作してみる8 ～簡易libc(printfなど)を自作 & メモリマップ取得～](http://shadows.dip.jp/?p=711)  
+8. [OSを自作してみる8 ～簡易libc(printfなど)を自作 & メモリマップ取得～](https://zeus.shadow-net.jp/?p=711)  
    ソースコード : [version_7](/version_7)  
   
-9. [OSを自作してみる9 ～簡易プロンプトとコマンドを実装～](http://shadows.dip.jp/?p=1077)  
+9. [OSを自作してみる9 ～簡易プロンプトとコマンドを実装～](https://zeus.shadow-net.jp/?p=1077)  
    ソースコード : [version_8](/version_8)
   
 
