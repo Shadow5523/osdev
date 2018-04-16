@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include "../../include/syscall.h"
+#include "sysdep.h"
 
 size_t sh_write(int, const void*, size_t);
 
