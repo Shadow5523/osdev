@@ -33,7 +33,7 @@ GCC バージョン : gcc version 6.3.0
 9. [OSを自作してみる9 ～簡易プロンプトとコマンドを実装～](https://zeus.shadow-net.jp/?p=1077)  
    ソースコード : [version_8](/version_8)
 
-10. [OSを自作してみる10 ～ソフトウェア割り込みを実装してみる～](https://zeus.shadow-net.jp/?p=1201)
+10. [OSを自作してみる10 ～ソフトウェア割り込みを実装してみる～](https://zeus.shadow-net.jp/?p=1201)  
    ソースコード : [version_9](/version_9)  
 
 ## コンパイル済イメージファイル
