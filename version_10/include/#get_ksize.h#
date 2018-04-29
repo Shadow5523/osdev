@@ -1,8 +1,0 @@
-#ifndef _GET_KSIZE_H_
-#define _GET_KSIZE_H_
-
-#endif _GETMMAP_H_
-
-uint32_t get_ksize(void);
-
-#endif _GET_KSIZE_H_
