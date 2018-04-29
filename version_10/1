@@ -1,0 +1,2 @@
+mount error(16): Device or resource busy
+Refer to the mount.cifs(8) manual page (e.g. man mount.cifs)
