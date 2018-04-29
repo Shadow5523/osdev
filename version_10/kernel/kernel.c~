@@ -19,7 +19,7 @@ void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   sh_printf("Hello, kernel World! \n\n");
 
   //get kernel size
-  sh_printf("get kernel image size=%dKB\n", get_ksize() / 1024);
+  sh_printf("get kernel image size=%d\n", get_ksize() / 1024);
   
   //system call test
   sh_write(1, "test\n", 10);
