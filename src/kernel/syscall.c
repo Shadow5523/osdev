@@ -9,8 +9,8 @@ uint32_t syscall_interrupt(uint32_t syscall_num,
 			   uint32_t arg5){
   switch (syscall_num) {
   case SYSCALL_WRITE:
+    return do_write(arg1, arg2, arg3);
     break;
-
   case SYSCALL_READ:
     break;
   }

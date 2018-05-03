@@ -2,7 +2,7 @@ all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
       stdlib.o string.o math.o getmmap.o io.o sysdep.o \
-      syscall.o getksize.o
+      syscall.o getksize.o do_write.o
 
 OBJAS = interruptas.o idts.o gdts.o boot.o
 
@@ -61,6 +61,9 @@ kernel.o: $(KRNDIR)kernel.c $(INCLUDEDIR)kernel.h $(INCLUDEDIR)multiboot.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 syscall.o: $(KRNDIR)syscall.c $(INCLUDEDIR)syscall.h $(INCLUDEDIR)syscallnum.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+
+do_write.o: $(KRNDIR)do_write.c $(INCLUDEDIR)do_write.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 stdio.o: $(SHLIBC)stdio.c $(SHLIBCINC)stdio.h
