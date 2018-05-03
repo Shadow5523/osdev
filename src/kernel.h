@@ -17,7 +17,9 @@
 #include "terminal.h"
 #include "keyboard.h"
 #include "inb_outb.h"
-#include "gdt.h"     //追加
+#include "gdt.h"
+#include "pic.h"     //追加
+#include "idt.h"     //追加
 
 size_t strlen(const uint8_t*);
 

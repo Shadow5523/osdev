@@ -1,4 +1,13 @@
 all: create
+pic.o: pic.h pic.c
+	i686-elf-gcc -c pic.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+idts.o: idt.s
+	i686-elf-as idt.s -o idts.o
+
+idt.o: idt.h idt.c
+	i686-elf-gcc -c idt.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
 gdts.o: gdt.s
 	i686-elf-as gdt.s -o gdts.o
 
@@ -20,7 +29,7 @@ terminal.o: terminal.h terminal.c vga.h
 kernel.o: kernel.c
 	i686-elf-gcc -c kernel.c -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
-create: kernel.o terminal.o boot.o inb_outb.o keyboard.o gdts.o gdt.o
+create: kernel.o terminal.o boot.o inb_outb.o keyboard.o gdts.o gdt.o idt.o idts.o pic.o
 	i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib *.o -lgcc
 	grub2-file --is-x86-multiboot myos.bin
 	\cp -f myos.bin isodir/boot/myos.bin
