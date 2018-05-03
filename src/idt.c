@@ -1,4 +1,4 @@
-#include "idt.h"
+#include "include/idt.h"
 
 void idt_init(void){
   idtr idt;
@@ -7,6 +7,7 @@ void idt_init(void){
     set_gate_desc(i, 0, 0, 0);
   }
 
+  set_gate_desc(33, (uint32_t)as_keyboard_interrupt, 0x08, 0x8e);     //追加
   idt.idt_size = IDT_LEN * sizeof(gate_desc) - 1;
   idt.base = (uint32_t)idt_entries;
   load_idtr((uint32_t)&(idt));
