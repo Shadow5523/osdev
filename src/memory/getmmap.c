@@ -38,5 +38,6 @@ void getmmap(multiboot_info_t* mbt){
     }
     sh_printf("type = %s\n", type_str);
   }
+  sh_printf("Total memory %dMB\n", (mbt -> mem_lower + mbt -> mem_upper + 1024) / 1024);
   sh_printf("===================================================\n\n");
 }

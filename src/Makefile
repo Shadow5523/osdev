@@ -2,7 +2,7 @@ all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
       stdlib.o string.o math.o getmmap.o io.o sysdep.o \
-      syscall.o
+      syscall.o getksize.o
 
 OBJAS = interruptas.o idts.o gdts.o boot.o
 
@@ -84,6 +84,10 @@ sysdep.o: $(SHLIBC)sysdep.c $(SHLIBCINC)sysdep.h
 getmmap.o: $(MEMDIR)getmmap.c $(INCLUDEDIR)getmmap.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
+getksize.o: $(MEMDIR)get_ksize.c $(INCLUDEDIR)get_ksize.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+
+
 create: $(OBJAS) $(OBJ)
 	$(CC) -T linker.ld -o myos.bin $(CFLAGS) -nostdlib *.o -lgcc
 	grub2-file --is-x86-multiboot myos.bin
@@ -92,5 +96,5 @@ create: $(OBJAS) $(OBJ)
 
 clean:
 	rm -f *.o myos.bin myos.iso isodir/boot/myos.bin
-	rm -f ./*~ $(ARCHDIR)*~ $(INCLUDEDIR)*~ $(SHLIBCINC)*~
+	rm -f ./*~ $(ARCHDIR)*~ $(INCLUDEDIR)*~ $(SHLIBCINC)*~ $(MEMDIR)*~ 
 	rm -f $(SHLIBCINC)*gch $(INCLUDEDIR)*gch
