@@ -12,6 +12,7 @@ uint32_t syscall_interrupt(uint32_t syscall_num,
     return do_write(arg1, arg2, arg3);
     break;
   case SYSCALL_READ:
+    return do_read(arg1, arg2, arg3);
     break;
   }
   return 0;

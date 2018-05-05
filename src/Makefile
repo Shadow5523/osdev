@@ -2,7 +2,7 @@ all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
       stdlib.o string.o math.o getmmap.o io.o sysdep.o \
-      syscall.o getksize.o do_write.o
+      syscall.o getksize.o do_write.o do_read.o
 
 OBJAS = interruptas.o idts.o gdts.o boot.o
 
@@ -66,6 +66,9 @@ syscall.o: $(KRNDIR)syscall.c $(INCLUDEDIR)syscall.h $(INCLUDEDIR)syscallnum.h
 do_write.o: $(KRNDIR)do_write.c $(INCLUDEDIR)do_write.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
+do_read.o: $(KRNDIR)do_read.c $(INCLUDEDIR)do_read.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+
 stdio.o: $(SHLIBC)stdio.c $(SHLIBCINC)stdio.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
@@ -99,5 +102,6 @@ create: $(OBJAS) $(OBJ)
 
 clean:
 	rm -f *.o myos.bin myos.iso isodir/boot/myos.bin
-	rm -f ./*~ $(ARCHDIR)*~ $(INCLUDEDIR)*~ $(SHLIBCINC)*~ $(MEMDIR)*~ 
+	rm -f ./*~ $(ARCHDIR)*~ $(INCLUDEDIR)*~ $(SHLIBCINC)*~ $(MEMDIR)*~ \
+		$(KRNDIR)*~
 	rm -f $(SHLIBCINC)*gch $(INCLUDEDIR)*gch
