@@ -28,6 +28,7 @@
 #include "multiboot.h"
 #include "getmmap.h"
 #include "get_ksize.h"
+#include "init_pmemory.h"
 
 #include "../sh_libc/include/stdio.h"
 #include "../sh_libc/include/math.h"

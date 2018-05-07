@@ -2,7 +2,7 @@ all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
       stdlib.o string.o math.o getmmap.o io.o sysdep.o \
-      syscall.o getksize.o do_write.o do_read.o
+      syscall.o getksize.o do_write.o do_read.o init_pmemory.o
 
 OBJAS = interruptas.o idts.o gdts.o boot.o
 
@@ -91,8 +91,10 @@ getmmap.o: $(MEMDIR)getmmap.c $(INCLUDEDIR)getmmap.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 getksize.o: $(MEMDIR)get_ksize.c $(INCLUDEDIR)get_ksize.h
-	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra	
 
+init_pmemory.o: $(MEMDIR)init_pmemory.c $(INCLUDEDIR)init_pmemory.h
+	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra	
 
 create: $(OBJAS) $(OBJ)
 	$(CC) -T linker.ld -o myos.bin $(CFLAGS) -nostdlib *.o -lgcc
