@@ -5,7 +5,9 @@
 #include <stddef.h>
 
 #include "multiboot.h"
+#include "get_ksize.h"
 #include "../sh_libc/include/stdio.h"
+#include "../sh_libc/include/string.h"
 
 typedef struct{
   uint32_t system_msize;  //システムメモリサイズ
@@ -18,6 +20,7 @@ typedef struct{
 
 p_memory_info pm_info;
 
+void get_system_mblocks(uint32_t);
 void setmemory(int);
 void clearmemory(int);
 void init_free4kb(uint32_t, uint32_t);

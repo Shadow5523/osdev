@@ -8,8 +8,9 @@ static size_t i;
 void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
   sh_printf("Initialize Terminal... OK\n");
-  init_pmemory(mbt);
-  //getmmap(mbt); 
+
+  //memory
+  init_pmemory(mbt, getmmap(mbt));  
   gdt_init();
   pic_init();
   idt_init();

@@ -58,3 +58,12 @@ void* sh_memcpy(void* restrict dst_ptr,
   for (size_t i = 0; i < size; i++) { dst[i] = src[i]; }
   return dst_ptr;
 }
+
+
+void* sh_memset(void *s, int c, size_t n){
+  unsigned char* ptr = (unsigned char *)s;
+  if (n) {
+    while (n-- > 0) { *ptr++ = c; }
+  }
+  return s;
+}

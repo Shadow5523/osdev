@@ -1,9 +1,10 @@
 #include "../include/getmmap.h"
 
-void getmmap(multiboot_info_t* mbt){
+uint32_t getmmap(multiboot_info_t* mbt){
   multiboot_memory_t* mmap = mbt -> mmap_addr;
   char* type_str;
-
+  uint32_t total_mem_size;
+  
   sh_printf("\n\n================get memory map=====================\n");
 
   for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length); mmap++) {
@@ -38,6 +39,9 @@ void getmmap(multiboot_info_t* mbt){
     }
     sh_printf("type = %s\n", type_str);
   }
-  sh_printf("Total memory %dMB\n", (mbt -> mem_lower + mbt -> mem_upper + 1024) / 1024);
+  total_mem_size = (mbt -> mem_lower + mbt -> mem_upper + 1024) / 1024;
+  sh_printf("Total memory %dMB\n", total_mem_size);
   sh_printf("===================================================\n\n");
+
+  return total_mem_size;
 }
