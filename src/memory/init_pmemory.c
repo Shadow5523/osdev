@@ -7,7 +7,7 @@ void get_system_mblocks(uint32_t msize){
   pm_info.free_blocks = 0;
   pm_info.mmap = (uint32_t *)&__kernel_start + get_ksize(); //ビットマップのアドレス
   pm_info.mmap_size = pm_info.system_mbloks / sizeof(uint32_t) * 8;
-  sh_memset((void *)pm_info.mmap, 0xff, pm_info.mmap_size);
+  sh_memset((void *)pm_info.mmap, 0xff, msize);
 }
 
 
@@ -24,7 +24,6 @@ void clearmemory(int bnum){
 void init_free4kb(uint32_t address, uint32_t size){
   uint32_t b_number;
   uint32_t b_size;
-  int i;
   
   b_number = address / 4096;
   b_size = size / 4096;
