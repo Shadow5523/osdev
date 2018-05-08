@@ -11,6 +11,8 @@
 
 bool PRINTF_LEN_FLAG;
 
+#define NULL ((void *)0)
+
 int sh_printf(const unsigned char*, ...);
 int sh_vprintf(const unsigned char*, va_list);
 void numeral_formatting(int, int, int);

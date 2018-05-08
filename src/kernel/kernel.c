@@ -28,6 +28,16 @@ void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   sh_read(0, buf, 10);
   */
 
+  //malloc test
+
+  char *testbuf1;
+  char *testbuf2;
+  char *testbuf3;
+  
+  sh_printf("addr = 0x%x\n", malloc4kb());
+  sh_printf("addr = 0x%x\n", malloc4kb());
+  sh_printf("addr = 0x%x\n", malloc4kb());
+
   prompt();
 }
 

@@ -23,7 +23,7 @@ p_memory_info pm_info;
 void get_system_mblocks(uint32_t);
 void setmemory(int);
 void clearmemory(int);
-void init_free4kb(uint32_t, uint32_t);
-void init_alloc4kb(uint32_t, uint32_t);
+void pbitmap_free(uint32_t, uint32_t);
+void pbitmap_alloc(uint32_t, uint32_t);
 
 #endif _INIT_PMEMORY_H_
