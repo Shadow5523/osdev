@@ -7,10 +7,13 @@ static size_t i;
  
 void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
-  sh_printf("Initialize Terminal... OK\n");
 
   //memory
-  init_pmemory(mbt, getmmap(mbt));  
+  init_pmemory(mbt, getmmap(mbt));
+  sh_printf("physical memory init... OK!\n");
+  init_vmemory();
+  sh_printf("virtual memory init... OK!\n");
+
   gdt_init();
   pic_init();
   idt_init();
@@ -27,16 +30,12 @@ void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   char buf[11];
   sh_read(0, buf, 10);
   */
-
-  //malloc test
-
-  char *testbuf1;
-  char *testbuf2;
-  char *testbuf3;
   
-  sh_printf("addr = 0x%x\n", malloc4kb());
-  sh_printf("addr = 0x%x\n", malloc4kb());
-  sh_printf("addr = 0x%x\n", malloc4kb());
+  //malloc test
+  
+  //sh_printf("addr = 0x%x\n", malloc4kb());
+  //sh_printf("addr = 0x%x\n", malloc4kb());
+  //sh_printf("addr = 0x%x\n", malloc4kb());
 
   prompt();
 }
