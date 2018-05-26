@@ -5,7 +5,7 @@ void get_system_mblocks(uint32_t msize){
   pm_info.system_mbloks = msize / 4096;
   pm_info.allocated_blocks = pm_info.system_mbloks;
   pm_info.free_blocks = 0;
-  pm_info.mmap = (uint32_t *)&__kernel_start + get_ksize(); //ビットマップのアドレス
+  pm_info.mmap = &__kernel_start + get_ksize(); //ビットマップのアドレス
   pm_info.mmap_size = pm_info.system_mbloks / sizeof(uint32_t) * 8;
   sh_memset((void *)pm_info.mmap, 0xff, msize);
 }
@@ -63,7 +63,12 @@ void init_pmemory(multiboot_info_t *mbt, uint32_t total_msize){
     send_length = (mmap -> length_high << 8 ) +  mmap -> length_low;
 
     if(mmap -> type == 0x1 || mmap -> type == 0x3) {
-      pbitmap_free(send_addr, send_length);
+      if (send_addr == &__kernel_start){
+        pbitmap_alloc(send_addr, get_ksize());
+        pbitmap_free(&__kernel_end, send_length - get_ksize());
+      } else {   
+        pbitmap_free(send_addr, send_length);
+      }
     } else {
       pbitmap_alloc(send_addr, send_length);
     }
