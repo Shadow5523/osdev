@@ -10,5 +10,6 @@ char* sh_strcpy(char*, const char*);
 char* sh_strcat(char*, const char*);
 int sh_strcmp(const char*, const char*);
 void* sh_memcpy(void* restrict, const void* restrict, size_t);
+void* sh_memset(void *, int, size_t);
 
 #endif _STRING_H_

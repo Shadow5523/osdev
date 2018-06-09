@@ -3,3 +3,7 @@
 size_t sh_write(int fd, const void* buffer, size_t byte){
   return system_call(SYSCALL_WRITE, fd, buffer, byte);
 }
+
+size_t sh_read(int fd, void* buffer, size_t byte){
+  return system_call(SYSCALL_READ, fd, buffer, byte);
+}
