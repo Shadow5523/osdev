@@ -9,7 +9,6 @@
 
 extern p_memory_info pm_info;
 
-int checkmemory(int);
 int findfreememory(unsigned int*);
 void* malloc4kb(void);
 void free4kb(void*);

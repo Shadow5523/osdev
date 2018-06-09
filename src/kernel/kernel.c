@@ -20,23 +20,6 @@ void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   key_init();
 
   sh_printf("Hello, kernel World! \n\n");
-
-  //get kernel size
-  sh_printf("get kernel image size=%dKB\n", get_ksize() / 1024);
-  
-  //system call test
-  /*
-  sh_write(1, "test\n", 10);
-  char buf[11];
-  sh_read(0, buf, 10);
-  */
-  
-  //malloc test
-  
-  //sh_printf("addr = 0x%x\n", malloc4kb());
-  //sh_printf("addr = 0x%x\n", malloc4kb());
-  //sh_printf("addr = 0x%x\n", malloc4kb());
-
   prompt();
 }
 
