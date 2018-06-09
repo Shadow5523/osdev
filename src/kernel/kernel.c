@@ -4,30 +4,22 @@ extern key_buf kb;
 extern size_t pmstr_len;
 size_t pmstr_len;
 static size_t i;
-
+ 
 void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
-  sh_printf("Initialize Terminal... OK\n");
-  getmmap(mbt); 
+
+  //memory
+  init_pmemory(mbt, getmmap(mbt));
+  sh_printf("physical memory init... OK!\n");
+  init_vmemory();
+  sh_printf("virtual memory init... OK!\n");
+
   gdt_init();
   pic_init();
   idt_init();
   key_init();
-  getmmap(mbt);
 
-  //getmmap(mbt);
   sh_printf("Hello, kernel World! \n\n");
-
-  //get kernel size
-  sh_printf("get kernel image size=%dKB\n", get_ksize() / 1024);
-  
-  //system call test
-  /*
-  sh_write(1, "test\n", 10);
-  char buf[11];
-  sh_read(0, buf, 10);
-  */
-  
   prompt();
 }
 

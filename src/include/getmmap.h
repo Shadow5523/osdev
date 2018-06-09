@@ -3,6 +3,6 @@
 
 #include "multiboot.h"
 
-void getmmap(multiboot_info_t*);
+uint32_t getmmap(multiboot_info_t*);
 
 #endif _GETMMAP_H_

@@ -3,7 +3,11 @@
 load_gdtr:
 	movl	4(%esp), %eax
 	lgdt	(%eax)
-	
+
+  mov %cr0, %eax 
+  or $1, %eax
+  mov %eax, %cr0
+  
 	mov 	$0x10, %ax
 	mov 	%ax,   %ds
 	mov 	%ax,   %es
