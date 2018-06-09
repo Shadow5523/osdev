@@ -60,8 +60,8 @@ void init_pmemory(multiboot_info_t *mbt, uint32_t total_msize){
 
     if(mmap -> type == 0x1 || mmap -> type == 0x3) {
       if (send_addr == &__kernel_start){
-        pbitmap_alloc(send_addr, get_ksize());
-        pbitmap_free(&__kernel_end, send_length - get_ksize());
+        pbitmap_alloc(send_addr, get_ksize() + pm_info.mmap_size);
+        pbitmap_free(&__kernel_end, send_length - (get_ksize() + pm_info.mmap_size));
       } else {
         pbitmap_free(send_addr, send_length);
       }
