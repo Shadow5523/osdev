@@ -4,21 +4,22 @@ extern key_buf kb;
 extern size_t pmstr_len;
 size_t pmstr_len;
 static size_t i;
-
+ 
 void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
-  sh_printf("Initialize Terminal... OK\n");
+
+  //memory
+  init_pmemory(mbt, getmmap(mbt));
+  sh_printf("physical memory init... OK!\n");
+  init_vmemory();
+  sh_printf("virtual memory init... OK!\n");
+
   gdt_init();
   pic_init();
   idt_init();
   key_init();
-  getmmap(mbt);
-  sh_printf("Hello, kernel World! \n\n");
 
-  //system call test
-  sh_write(1, "test\n", 10);
-  sh_printf("Arch linux!");
-  
+  sh_printf("Hello, kernel World! \n\n");
   prompt();
 }
 

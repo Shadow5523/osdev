@@ -5,7 +5,7 @@ double sh_pow(double x, double y){
   int j = 1;
   double p = 1;
 
-  if (y == 0) { return 1; }
+  if (!y) { return 1; }
 
   if (y > 0) {
     while (i <= y) {

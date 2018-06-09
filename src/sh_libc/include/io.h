@@ -6,5 +6,6 @@
 #include "sysdep.h"
 
 size_t sh_write(int, const void*, size_t);
+size_t sh_read(int, void*, size_t);
 
 #endif _IO_H_
