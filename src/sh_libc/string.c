@@ -8,10 +8,9 @@ size_t sh_strlen(const uint8_t* str){
 
 
 void sh_strrev(unsigned char* str){
-  size_t i = 0, j = 0;
   unsigned char tmp;
   size_t len = sh_strlen(str);
-  for(i = 0, j = len - 1; i < j; i++, j--) {
+  for (size_t i = 0, j = len - 1; i < j; i++, j--) {
     tmp = str[i];
     str[i] = str[j];
     str[j] = tmp;
@@ -38,12 +37,12 @@ char* sh_strcat(char *s1, const char *s2){
 
 
 int sh_strcmp(const char* s1, const char* s2){
-  const unsigned char *p1 = (const unsigned char *) s1;
-  const unsigned char *p2 = (const unsigned char *) s2;
+  const unsigned char *p1 = (const unsigned char *)s1;
+  const unsigned char *p2 = (const unsigned char *)s2;
   unsigned char c1, c2;
   do {
-    c1 = (unsigned char) *p1++;
-    c2 = (unsigned char) *p2++;
+    c1 = (unsigned char)*p1++;
+    c2 = (unsigned char)*p2++;
     if (c1 == '\0') { return c1 - c2; }
   } while (c1 == c2);
   return c1 - c2;

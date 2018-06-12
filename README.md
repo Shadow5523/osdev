@@ -35,7 +35,10 @@ GCC バージョン : gcc version 6.3.0
 
 10. [OSを自作してみる10 ～ソフトウェア割り込みを実装してみる～](https://zeus.shadow-net.jp/?p=1201)  
    ソースコード : [version0.9.0](https://github.com/Shadow5523/osdev/releases/tag/version0.9.0)  
-
+   
+11. [OSを自作してみる11 ～メモリ管理1:物理メモリ管理の実装とページングの有効化～](https://zeus.shadow-net.jp/?p=1273)  
+   ソースコード : [version0.10.0](https://github.com/Shadow5523/osdev/releases/tag/version0.10.0)  
+  
 ## コンパイル済イメージファイル
 最新版のイメージファイルを以下に配置しておきます。  
    [myos.iso](/imgfile)  

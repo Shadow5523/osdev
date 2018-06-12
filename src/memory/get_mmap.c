@@ -1,4 +1,4 @@
-#include "../include/getmmap.h"
+#include "../include/get_mmap.h"
 
 uint32_t getmmap(multiboot_info_t* mbt){
   multiboot_memory_t* mmap = mbt -> mmap_addr;
