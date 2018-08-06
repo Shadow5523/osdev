@@ -4,7 +4,7 @@ extern key_buf kb;
 extern size_t pmstr_len;
 size_t pmstr_len;
 static size_t i;
- 
+
 void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
 

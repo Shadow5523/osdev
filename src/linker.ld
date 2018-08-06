@@ -1,30 +1,28 @@
-ENTRY(_start)
+ENTRY(loader)
+OUTPUT_FORMAT(elf32-i386)
 
 SECTIONS{
-        . = 1M;
+  . = 0xC0100000;
 
-        .text BLOCK(4K) : ALIGN(4K){
-	        __kernel_start = .;
-                *(.multiboot)
-                *(.text)
+  .text ALIGN(4K) : AT(ADDR(.text) - 0xC0000000) {
+        __kernel_start = .;
+        *(.multiboot)
+        *(.text)
+  }
 
-        }
+  .rodata ALIGN(4K) : AT(ADDR(.rodata) - 0xC0000000) {
+        *(.rodata*)
+  }
 
-        .rodata BLOCK(4K) : ALIGN(4K){
-                *(.rodata)
+  .data ALIGN(4K) : AT(ADDR(.data) - 0xC0000000) {
+        *(.data)
+  }
 
-        }
-
-        .data BLOCK(4K) : ALIGN(4K){
-                *(.data)
-
-        }
-
-        .bss BLOCK(4K) : ALIGN(4K){
-                *(COMMON)
-                *(.bss)
-		__kernel_end = .;
-        }
-
+  .bss ALIGN(4K) : AT(ADDR(.bss) - 0xC0000000) {
+        *(COMMON)
+        *(.bss)
+        __kernel_end = .;        
+  }
 }
+
 
