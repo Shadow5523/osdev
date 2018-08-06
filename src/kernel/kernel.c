@@ -9,10 +9,10 @@ void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
 
   //memory
-  init_pmemory(mbt, getmmap(mbt));
-  sh_printf("physical memory init... OK!\n");
-  init_vmemory();
-  sh_printf("virtual memory init... OK!\n");
+  //init_pmemory(mbt, getmmap(mbt));
+  //sh_printf("physical memory init... OK!\n");
+  //init_vmemory();
+  //sh_printf("virtual memory init... OK!\n");
 
   gdt_init();
   pic_init();

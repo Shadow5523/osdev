@@ -14,8 +14,8 @@
 .align 0x1000
 
 //ページディレクトリ作成
-.global boot_pd
-boot_pd:
+.global _boot_pd
+_boot_pd:
   .long 0x00000083
   .fill (KERNEL_PNUM - 1), 4, 0x00000000
   
@@ -35,7 +35,7 @@ boot_pd:
 .global loader  
 .global _loader  
 _loader:
-  movl  $(boot_pd - KERNEL_VBASE), %ecx
+  movl  $(_boot_pd - KERNEL_VBASE), %ecx
   movl %ecx, %cr3
 
   // pse bit set
@@ -56,7 +56,7 @@ _loader:
 .type _start, @function
 
 _start:
-  movl $0, (boot_pd)
+  movl $0, (_boot_pd)
   // TLB Flush
   invlpg (0) 
   
