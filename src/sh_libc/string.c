@@ -18,11 +18,10 @@ void sh_strrev(unsigned char* str){
 }
 
 
-char* sh_strcpy(char *s1, const char *s2){
-  char* temp = s1;
-  while ((*temp++ = *s2++) != 0);
-  return s1;
+char* sh_strcpy(char *dest, const char *src){
+  return sh_memcpy(dest, src, sh_strlen(src) + 1);
 }
+
 
 
 char* sh_strcat(char *s1, const char *s2){

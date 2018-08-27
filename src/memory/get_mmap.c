@@ -1,14 +1,14 @@
 #include "../include/get_mmap.h"
 
 uint32_t getmmap(multiboot_info_t* mbt){
-  multiboot_memory_t* mmap = mbt -> mmap_addr;
-  char* type_str;
-  uint32_t total_mem_size;
+  multiboot_memory_t* mmap = mbt -> mmap_addr | 0xC0000000;
   
+  char type_str[32];
+  uint32_t total_mem_size;
+
   sh_printf("\n\n================get memory map=====================\n");
-
-  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length); mmap++) {
-
+  
+  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length | 0xC0000000); mmap++) { 
     switch (mmap -> type) {
     case 0x1:;
       sh_strcpy(type_str, "available RAM");
@@ -26,6 +26,7 @@ uint32_t getmmap(multiboot_info_t* mbt){
       sh_strcpy(type_str, "Usage prohibited RAM");
       break;
     }
+        
     if (mmap -> base_addr_high == 0x0) {
       sh_printf("base_addr = 0x%x: ", mmap -> base_addr_low);
     } else {
@@ -38,10 +39,13 @@ uint32_t getmmap(multiboot_info_t* mbt){
       sh_printf("length = 0x%x%08x: ", mmap -> length_high, mmap -> length_low);
     }
     sh_printf("type = %s\n", type_str);
+    
   }
+
+  
   total_mem_size = (mbt -> mem_lower + mbt -> mem_upper + 1024) / 1024;
   sh_printf("Total memory %dMB\n", total_mem_size);
   sh_printf("===================================================\n\n");
-
+  
   return total_mem_size;
 }

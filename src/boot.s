@@ -1,6 +1,3 @@
-.global _loader
-.extern kernel_main
-  
 .set ALIGN,    1<<0
 .set MEMINFO,  1<<1
 .set FLAGS,    ALIGN | MEMINFO
@@ -10,30 +7,29 @@
 .set KERNEL_VBASE, 0xC0000000
 .set KERNEL_PNUM, (KERNEL_VBASE >> 22)
 
+//初期のカーネルスタックサイズを確保する(16KB)
+.set STACKSIZE, 0x4000
+
 .section .data
-.align 0x1000
+.balign 0x1000
 
 //ページディレクトリ作成
-.global _boot_pd
 _boot_pd:
   .long 0x00000083
   .fill (KERNEL_PNUM - 1), 4, 0x00000000
-  
-  .long 0x00000083
+
+  .long 0x00000083 
   .fill (1024 - KERNEL_PNUM - 1), 4, 0x00000000
 
 .section .multiboot
-.align 4   
+.balign 4
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
 
-//初期のカーネルスタックサイズを確保する(16KB)
-.set STACKSIZE, 0x4000
-.set loader, _loader
-  
-.global loader  
-.global _loader  
+.section .text
+.global _loader
+
 _loader:
   movl  $(_boot_pd - KERNEL_VBASE), %ecx
   movl %ecx, %cr3
@@ -48,23 +44,20 @@ _loader:
   orl $0x80000000, %ecx
   movl %ecx, %cr0
 
-  lea (_start), %ecx
-  jmp %ecx
+  leal (_start), %ecx
+  jmp *%ecx
 
-.section .text
-.global _start
 .type _start, @function
-
 _start:
   movl $0, (_boot_pd)
+  
   // TLB Flush
   invlpg (0) 
   
-  movl $stack_top + STACKSIZE, %esp
-  
-	push %eax
-  addl  $KERNEL_VBASE, %ebx
-	push %ebx
+  movl $stack_top, %esp
+  addl $KERNEL_VBASE, %ebx
+  pushl %eax
+  pushl %ebx
   
   call kernel_main
   cli
@@ -75,8 +68,7 @@ _start:
 .size _start, . - _start
 
 .section .bss
-.align 32
+.balign 32
 stack_bottom:
 .skip STACKSIZE
 stack_top:
-  
