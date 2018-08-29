@@ -4,32 +4,71 @@
 .set MAGIC,    0x1BADB002
 .set CHECKSUM, -(MAGIC + FLAGS)
 
+.set KERNEL_VBASE, 0xC0000000
+.set KERNEL_PNUM, (KERNEL_VBASE >> 22)
+
+//初期のカーネルスタックサイズを確保する(16KB)
+.set STACKSIZE, 0x4000
+
+.section .data
+.balign 0x1000
+
+//ページディレクトリ作成
+_boot_pd:
+  .long 0x00000083
+  .fill (KERNEL_PNUM - 1), 4, 0x00000000
+
+  .long 0x00000083 
+  .fill (1024 - KERNEL_PNUM - 1), 4, 0x00000000
+
 .section .multiboot
-.align 4
+.balign 4
 .long MAGIC
 .long FLAGS
 .long CHECKSUM
 
-.section .bss
-.align 16
-stack_bottom:
-.skip 16384
-stack_top:
-
 .section .text
-.global _start
+.global _loader
+
+_loader:
+  movl  $(_boot_pd - KERNEL_VBASE), %ecx
+  movl %ecx, %cr3
+
+  // pse bit set
+  movl %cr4, %ecx
+  orl $0x00000010, %ecx
+  movl %ecx, %cr4
+
+  // enable paging
+  movl %cr0, %ecx
+  orl $0x80000000, %ecx
+  movl %ecx, %cr0
+
+  leal (_start), %ecx
+  jmp *%ecx
+
 .type _start, @function
-
 _start:
-        mov $stack_top, %esp
-
-	      push %eax
-	      push %ebx
+  movl $0, (_boot_pd)
   
-        call kernel_main
-        cli
-1:              hlt
-        jmp 1b
+  // TLB Flush
+  invlpg (0) 
+  
+  movl $stack_top, %esp
+  addl $KERNEL_VBASE, %ebx
+  pushl %eax
+  pushl %ebx
+  
+  call kernel_main
+  cli
 
+1: hlt
+  jmp 1b
 
 .size _start, . - _start
+
+.section .bss
+.balign 32
+stack_bottom:
+.skip STACKSIZE
+stack_top:
