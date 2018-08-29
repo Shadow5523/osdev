@@ -6,6 +6,7 @@
 
 #include "multiboot.h"
 #include "get_ksize.h"
+#include "get_mmap.h"
 #include "../sh_libc/include/stdio.h"
 #include "../sh_libc/include/string.h"
 

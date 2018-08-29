@@ -25,7 +25,7 @@ void pbitmap_free(uint32_t address, uint32_t size){
   address /= 4096;
   size /= 4096;
     
-  for(size_t i = address; i <= size; i++){
+  for (size_t i = address; i <= size; i++) {
     clearmemory(address);
     address++;
     pm_info.allocated_blocks--;
@@ -38,7 +38,7 @@ void pbitmap_alloc(uint32_t address, uint32_t size){
   address /= 4096;
   size = (size / 4096) == 0 ? 1 : size / 4096;
 
-  for(size_t i = address; i <= size; i++){
+  for (size_t i = address; i <= size; i++) {
     setmemory(address);
     address++;
     pm_info.allocated_blocks++;
@@ -50,16 +50,16 @@ void pbitmap_alloc(uint32_t address, uint32_t size){
 void init_pmemory(multiboot_info_t *mbt, uint32_t total_msize){
   uint32_t send_addr;
   uint32_t send_length;
-  multiboot_memory_t* mmap = mbt -> mmap_addr;
+  multiboot_memory_t* mmap = mbt -> mmap_addr | VBASE;
 
   get_system_mblocks(total_msize * 1024 * 1024);
  
-  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length); mmap++) {
+  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length | VBASE); mmap++) {
     send_addr = (mmap -> base_addr_high << 8) |  mmap -> base_addr_low;
     send_length = (mmap -> length_high << 8 ) |  mmap -> length_low;
 
-    if(mmap -> type == 0x1 || mmap -> type == 0x3) {
-      if (send_addr == &__kernel_start){
+    if (mmap -> type == 0x1 || mmap -> type == 0x3) {
+      if (send_addr == &__kernel_start) {
         pbitmap_alloc(send_addr, get_ksize() + pm_info.mmap_size);
         pbitmap_free(&__kernel_end, send_length - (get_ksize() + pm_info.mmap_size));
       } else {

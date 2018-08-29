@@ -1,41 +1,30 @@
 # 自作OS(仮称)
+x86 32bit なOSです。  
 
 ## 開発環境
 OS : Linux(CentOS7.1)  
 使用プログラミング言語 : C, GNU Assembler  
 GCC バージョン : gcc version 6.3.0  
 
-## 記事毎に使用したソースコードをまとめておきます。
-1. [OSを自作してみる1 ～Linuxで自作OSを作る環境を構築する～](https://zeus.shadow-net.jp/?p=118)  
+記事毎に使用したソースコードと解説記事は[Releases](https://github.com/Shadow5523/osdev/releases)から参照することができる。  
   
-  
-2. [OSを自作してみる2 ～32ビットOSの作成～](https://zeus.shadow-net.jp/?p=126)  
-   ソースコード : [version0.1.0](https://github.com/Shadow5523/osdev/releases/tag/version0.1.0)
-  
-3. [OSを自作してみる3 ～キーボード入力～](https://zeus.shadow-net.jp/?p=235)  
-   ソースコード : [version0.2.0](https://github.com/Shadow5523/osdev/releases/tag/version0.2.0)
-  
-4. [OSを自作してみる4 ～GDT初期化～](https://zeus.shadow-net.jp/?p=337)  
-   ソースコード : [version0.3.0](https://github.com/Shadow5523/osdev/releases/tag/version0.3.0)
-  
-5. [OSを自作してみる5 ～IDT/PICの初期化～](https://zeus.shadow-net.jp/?p=415)  
-   ソースコード : [version0.4.0](https://github.com/Shadow5523/osdev/releases/tag/version0.4.0)  
+## コンパイル  
+※クロスコンパイラの導入方法は下記記事を参照。  
+[OSを自作してみる1 ～Linuxで自作OSを作る環境を構築する～](https://zeus.shadow-net.jp/?p=118)  
 
-6. [OSを自作してみる6 ～割り込み経由でのキー入力～](https://zeus.shadow-net.jp/?p=508)  
-   ソースコード : [version0.5.0](https://github.com/Shadow5523/osdev/releases/tag/version0.5.0)  
-
-7. [OSを自作してみる7 ～キーボード入力2～](https://zeus.shadow-net.jp/?p=667)  
-   ソースコード : [version0.6.0](https://github.com/Shadow5523/osdev/releases/tag/version0.6.0)  
-
-8. [OSを自作してみる8 ～簡易libc(printfなど)を自作 & メモリマップ取得～](https://zeus.shadow-net.jp/?p=711)  
-   ソースコード : [version0.7.0](https://github.com/Shadow5523/osdev/releases/tag/version0.7.0)  
+1.osdevレポジトリをcloneする。  
+git clone https://github.com/Shadow5523/osdev.git  
   
-9. [OSを自作してみる9 ～簡易プロンプトとコマンドを実装～](https://zeus.shadow-net.jp/?p=1077)  
-   ソースコード : [version0.8.0](https://github.com/Shadow5523/osdev/releases/tag/version0.8.0)
+2.ソースコードのディレクトリへ移動  
+cd osdev/src  
+  
+3.makeを使用してコンパイルする。同じディレクトリに出来る"myos.iso"がOSのイメージファイルとなる。  
+make
+  
+4.make cleanでオブジェクトファイルを消すことが出来る。
+make clean  
 
-10. [OSを自作してみる10 ～ソフトウェア割り込みを実装してみる～](https://zeus.shadow-net.jp/?p=1201)  
-   ソースコード : [version0.9.0](https://github.com/Shadow5523/osdev/releases/tag/version0.9.0)  
-
+  
 ## コンパイル済イメージファイル
 最新版のイメージファイルを以下に配置しておきます。  
    [myos.iso](/imgfile)  

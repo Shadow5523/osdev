@@ -26,9 +26,10 @@
 #include "pic.h"
 #include "idt.h"
 #include "multiboot.h"
-#include "getmmap.h"
+#include "get_mmap.h"
 #include "get_ksize.h"
 #include "init_pmemory.h"
+#include "init_vmemory.h"
 #include "pmalloc.h"
 
 #include "../sh_libc/include/stdio.h"
