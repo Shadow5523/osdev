@@ -1,11 +1,9 @@
 #include "../include/pmalloc.h"
 
 int findfreememory(unsigned int *bnum){
-  size_t b_count;
-
   for (size_t b_index = 0; b_index < pm_info.mmap_size; b_index++) {
     if (pm_info.mmap[b_index] != 0xFFFFFFFF) {
-      for (b_count = 0; b_count < 32; b_count++) {
+      for (size_t b_count = 0; b_count < 32; b_count++) {
         if (!(pm_info.mmap[b_index] & (1 << (b_count % 32)))) {
           *bnum = b_index * sizeof(unsigned int) * 8 + b_count;
           return 0;

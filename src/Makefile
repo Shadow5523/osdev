@@ -1,7 +1,7 @@
 all: create
 OBJ = kernel.o terminal.o boot.o inb_outb.o keyboard.o \
       keymap.o gdt.o idt.o pic.o interrupt.o stdio.o \
-      stdlib.o string.o math.o getmmap.o io.o sysdep.o \
+      stdlib.o string.o math.o get_mmap.o io.o sysdep.o \
       syscall.o getksize.o do_write.o do_read.o init_pmemory.o pmalloc.o\
       init_vmemory.o
 
@@ -91,7 +91,7 @@ io.o: $(SHLIBC)io.c $(SHLIBCINC)io.h
 sysdep.o: $(SHLIBC)sysdep.c $(SHLIBCINC)sysdep.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
-getmmap.o: $(MEMDIR)getmmap.c $(INCLUDEDIR)getmmap.h
+get_mmap.o: $(MEMDIR)get_mmap.c $(INCLUDEDIR)get_mmap.h
 	$(CC) -c $^ -std=gnu99 $(CFLAGS) -Wextra
 
 getksize.o: $(MEMDIR)get_ksize.c $(INCLUDEDIR)get_ksize.h

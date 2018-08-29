@@ -32,6 +32,43 @@ uint8_t ps2_kerboard_init(void){
 }
 
 
+void select_keymode(uint8_t scan_code){
+  if (kb.len < 128) {
+    if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
+      ks.shift_enable = true;
+    } else if (scan_code == CAPS_LOCK && !ks.caps_lock) {
+      ks.caps_lock = true;
+      ks.led_stat += SET_CAPSLOCK_LED;
+      switch_kb_led(ks.led_stat);
+    } else if (scan_code == CAPS_LOCK && ks.caps_lock) {
+      ks.caps_lock = false;
+      ks.led_stat -= SET_CAPSLOCK_LED;
+      switch_kb_led(ks.led_stat);
+    } else if (scan_code == NUM_LOCK && !ks.num_lock) {
+      ks.num_lock = true;
+      ks.led_stat += SET_NUMLOCK_LED;
+      switch_kb_led(ks.led_stat);
+    } else if (scan_code == NUM_LOCK && ks.num_lock) {
+      ks.num_lock = false;
+      ks.led_stat -= SET_NUMLOCK_LED;
+      switch_kb_led(ks.led_stat);
+    } else if (scan_code == SCROLL_LOCK && !ks.scr_lock) {
+      ks.scr_lock = true;
+      ks.led_stat += SET_SCROLLLOCK_LED;
+      switch_kb_led(ks.led_stat);
+    } else if (scan_code == SCROLL_LOCK && ks.scr_lock) {
+      ks.scr_lock = false;
+      ks.led_stat -= SET_SCROLLLOCK_LED;
+      switch_kb_led(ks.led_stat);
+    } else {
+      input_bufdata(scan_code);
+      ++kb.len;
+      if (kb.write == 128) { kb.write = 0; }
+    }
+  }
+}
+
+
 void keyboard_input_int(uint8_t scan_code){
   if (scan_code == 0xE0) {
     if (!ext_input) {
@@ -41,39 +78,7 @@ void keyboard_input_int(uint8_t scan_code){
     }
   }
   if (scan_code <= 0x80) {
-    if (kb.len < 128) {
-      if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
-	ks.shift_enable = true;
-      } else if (scan_code == CAPS_LOCK && !ks.caps_lock) {
-	ks.caps_lock = true;
-	ks.led_stat += SET_CAPSLOCK_LED;
-	switch_kb_led(ks.led_stat);
-      } else if (scan_code == CAPS_LOCK && ks.caps_lock) {
-	ks.caps_lock = false;
-	ks.led_stat -= SET_CAPSLOCK_LED;
-	switch_kb_led(ks.led_stat);
-      } else if (scan_code == NUM_LOCK && !ks.num_lock) {
-	ks.num_lock = true;
-	ks.led_stat += SET_NUMLOCK_LED;
-	switch_kb_led(ks.led_stat);
-      } else if (scan_code == NUM_LOCK && ks.num_lock) {
-	ks.num_lock = false;
-	ks.led_stat -= SET_NUMLOCK_LED;
-	switch_kb_led(ks.led_stat);
-      } else if (scan_code == SCROLL_LOCK && !ks.scr_lock) {
-	ks.scr_lock = true;
-	ks.led_stat += SET_SCROLLLOCK_LED;
-	switch_kb_led(ks.led_stat);
-      } else if (scan_code == SCROLL_LOCK && ks.scr_lock) {
-	ks.scr_lock = false;
-	ks.led_stat -= SET_SCROLLLOCK_LED;
-	switch_kb_led(ks.led_stat);
-      } else {
-	input_bufdata(scan_code);
-	++kb.len;
-	if (kb.write == 128) { kb.write = 0; }
-      }
-    }
+    select_keymode(scan_code);
   } else {
     scan_code -= 0x80;
     if (scan_code == L_SHIFT || scan_code == R_SHIFT) {
@@ -81,7 +86,7 @@ void keyboard_input_int(uint8_t scan_code){
     }
   }
 }
-     
+
 
 void switch_kb_led(uint8_t set_led){
   while (inb(PORTMAP_KEYBOARD2) & 0x02);
@@ -150,16 +155,16 @@ void input_bufdata(uint8_t scan_code){
     } else if (ks.shift_enable && !ks.caps_lock) {
       kb.pdata[kb.write++] = key -> shift[scan_code];
     } else if (!ks.shift_enable && ks.caps_lock) {
-      if ((numpad_data = key -> base[scan_code]) >= 'a' && numpad_data <= 'z'){
-	kb.pdata[kb.write++] = key -> shift[scan_code];
-      }else{
-	kb.pdata[kb.write++] = key -> base[scan_code];
+      if ((numpad_data = key -> base[scan_code]) >= 'a' && numpad_data <= 'z') {
+	      kb.pdata[kb.write++] = key -> shift[scan_code];
+      } else {
+	      kb.pdata[kb.write++] = key -> base[scan_code];
       }
-    }else if (ks.shift_enable && ks.caps_lock){
-      if ((numpad_data = key -> base[scan_code]) >= 'a' && numpad_data <= 'z'){
-	kb.pdata[kb.write++] = key -> base[scan_code];
-      }else{
-	kb.pdata[kb.write++] = key -> shift[scan_code];
+    } else if (ks.shift_enable && ks.caps_lock) {
+      if ((numpad_data = key -> base[scan_code]) >= 'a' && numpad_data <= 'z') {
+	      kb.pdata[kb.write++] = key -> base[scan_code];
+      } else {
+        kb.pdata[kb.write++] = key -> shift[scan_code];
       }
     } else {
       kb.pdata[kb.write++] = key -> base[scan_code];

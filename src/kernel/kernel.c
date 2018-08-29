@@ -4,22 +4,34 @@ extern key_buf kb;
 extern size_t pmstr_len;
 size_t pmstr_len;
 static size_t i;
- 
+
 void kernel_main(multiboot_info_t* mbt, uint32_t magic){
   terminal_initialize();
 
   //memory
-  init_pmemory(mbt, getmmap(mbt));
-  sh_printf("physical memory init... OK!\n");
-  init_vmemory();
-  sh_printf("virtual memory init... OK!\n");
+  //init_pmemory(mbt, getmmap(mbt));
+  //sh_printf("physical memory init... OK!\n");
+  //init_vmemory();
+  //sh_printf("virtual memory init... OK!\n");
 
+  //multiboot
+  sh_printf("multiboot magic number 0x%x\n", magic);
+  getmmap(mbt);
+
+  //cr0レジスタの値を確認
+  uint32_t cr0_data;
+  asm volatile(
+      "pop %%eax \n"
+      "mov %%cr0, %%eax \n"
+      : "=a"(cr0_data) : : );
+  sh_printf("cr0 registar=0x%x\n", cr0_data);
+  
   gdt_init();
   pic_init();
   idt_init();
   key_init();
 
-  sh_printf("Hello, kernel World! \n\n");
+  sh_printf("Hello, kernel World! \n\n");  
   prompt();
 }
 
