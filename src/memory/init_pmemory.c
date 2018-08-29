@@ -50,11 +50,11 @@ void pbitmap_alloc(uint32_t address, uint32_t size){
 void init_pmemory(multiboot_info_t *mbt, uint32_t total_msize){
   uint32_t send_addr;
   uint32_t send_length;
-  multiboot_memory_t* mmap = mbt -> mmap_addr;
+  multiboot_memory_t* mmap = mbt -> mmap_addr | VBASE;
 
   get_system_mblocks(total_msize * 1024 * 1024);
  
-  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length); mmap++) {
+  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length | VBASE); mmap++) {
     send_addr = (mmap -> base_addr_high << 8) |  mmap -> base_addr_low;
     send_length = (mmap -> length_high << 8 ) |  mmap -> length_low;
 

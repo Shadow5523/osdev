@@ -1,14 +1,14 @@
 #include "../include/get_mmap.h"
 
 uint32_t getmmap(multiboot_info_t* mbt){
-  multiboot_memory_t* mmap = mbt -> mmap_addr | 0xC0000000;
+  multiboot_memory_t* mmap = mbt -> mmap_addr | VBASE;
   
   char type_str[32];
   uint32_t total_mem_size;
 
   sh_printf("\n\n================get memory map=====================\n");
   
-  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length | 0xC0000000); mmap++) { 
+  for (mmap; mmap < (mbt -> mmap_addr + mbt -> mmap_length | VBASE); mmap++) { 
     switch (mmap -> type) {
     case 0x1:;
       sh_strcpy(type_str, "available RAM");
